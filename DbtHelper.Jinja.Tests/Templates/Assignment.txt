@@ -1,0 +1,2 @@
+{% set row_class = 1 %}
+{{ row_class }}
