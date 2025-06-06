@@ -275,6 +275,24 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEndwhile_fragment([NotNull] JinjaParser.Endwhile_fragmentContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.for_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFor_statement([NotNull] JinjaParser.For_statementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.for_fragment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFor_fragment([NotNull] JinjaParser.For_fragmentContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.endfor_fragment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEndfor_fragment([NotNull] JinjaParser.Endfor_fragmentContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="JinjaParser.body"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

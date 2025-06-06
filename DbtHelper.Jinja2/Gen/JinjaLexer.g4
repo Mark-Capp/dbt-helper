@@ -44,6 +44,10 @@ END_WHILE: '{% endwhile %}';
 SET_BLOCK: '{% set';
 MACRO: 'macro';
 END_MACRO: 'endmacro';
+FOR: 'for';
+END_FOR: 'endfor';
+IN: 'in';
+
 
 
 ID: ([a-zA-Z]) ([a-zA-Z] | [0-9] | '_')* ;

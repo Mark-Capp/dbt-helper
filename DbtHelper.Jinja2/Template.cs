@@ -5,7 +5,7 @@ public class Template
     private readonly Renderer _renderer;
     private readonly string _content;
 
-    internal Template(Renderer renderer, string content)
+    private Template(Renderer renderer, string content)
     {
         _renderer = renderer;
         _content = content;

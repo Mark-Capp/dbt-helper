@@ -5,12 +5,8 @@ file: program;
 program: statement*? EOF;
 
 statement
-    : evaluation_statement
-    | body
+    : non_macro_statements
     | macro_statement
-    | if_statement
-    | assignment_statement
-    | while_statement
     ;
     
 non_macro_statements
@@ -19,6 +15,7 @@ non_macro_statements
     | if_statement
     | assignment_statement
     | while_statement
+    | for_statement
     ;
 
 assignment_statement
@@ -32,6 +29,7 @@ expression
     | DOUBLE                                                           #eqDbl
     | INT                                                              #eqInt
     | STRING                                                           #eqStr
+    | BOOL                                                             #eqExBool
     | ID                                                               #eqVar
     ;
 
@@ -81,7 +79,7 @@ elif_statement
     : elif_fragment (code_block)*? (elif_statement | else_statement)? ;
 
 else_statement
-    : else_fragment code_block ;
+    : else_fragment code_block*?;
 
 if_fragment
     : BLOCK_START (SUB)? IF_WORD LPAREN boolean_expression RPAREN (SUB)? BLOCK_END NEWLINE? 
@@ -104,6 +102,15 @@ while_fragment
     | BLOCK_START (SUB)? WHILE boolean_expression (SUB)? BLOCK_END NEWLINE?
     ;
 endwhile_fragment: END_WHILE NEWLINE?;
+
+
+for_statement: for_fragment code_block*? endfor_fragment;
+
+for_fragment
+    : BLOCK_START SUB? FOR ID IN ID SUB? BLOCK_END NEWLINE?
+    ;
+
+endfor_fragment: BLOCK_START SUB? END_FOR SUB? BLOCK_END NEWLINE?;
 
 body: contents;
 
