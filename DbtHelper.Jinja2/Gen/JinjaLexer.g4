@@ -22,8 +22,12 @@ NEQ: '!=';
 LPAREN: '(';
 RPAREN: ')';
 EQUALS: '=';
+LCURLY: '{';
+RCURLY: '}';
+QUOTE: '"';
 RSQBRACKET : ']';
 LSQBRACKET : '[';
+COLON: ':';
 
 EXPRESSION_START: '{{';
 EXPRESSION_END: '}}';

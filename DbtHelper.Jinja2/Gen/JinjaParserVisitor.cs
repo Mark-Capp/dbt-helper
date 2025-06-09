@@ -83,6 +83,13 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEqDbl([NotNull] JinjaParser.EqDblContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>eqDictionary</c>
+	/// labeled alternative in <see cref="JinjaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqDictionary([NotNull] JinjaParser.EqDictionaryContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>eqFunc</c>
 	/// labeled alternative in <see cref="JinjaParser.expression"/>.
 	/// </summary>
@@ -144,6 +151,12 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitCollection([NotNull] JinjaParser.CollectionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.dictionary"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDictionary([NotNull] JinjaParser.DictionaryContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="JinjaParser.collection_accessor"/>.
 	/// </summary>

@@ -28,6 +28,8 @@ expression
     | func                                                             #eqFunc
     | collection                                                       #eqCollection
     | collection_accessor                                              #eqCollectionAccessor
+    | dictionary                                                       #eqDictionary
+    | dictionary_accessor                                              #eqDictionaryAccessor
     | DOUBLE                                                           #eqDbl
     | INT                                                              #eqInt
     | STRING                                                           #eqStr
@@ -37,6 +39,22 @@ expression
     
 collection
     : LSQBRACKET ((INT?) (COMMA INT)*?) RSQBRACKET
+    ;
+    
+dictionary
+    : LPAREN LCURLY (dictionary_fragment)* RCURLY RPAREN
+    ;
+    
+dictionary_fragment
+    : dictionary_item (COMMA dictionary_item)*
+    ;
+    
+dictionary_item
+    : QUOTE key=ID QUOTE COLON QUOTE value=ID QUOTE
+    ;
+    
+dictionary_accessor
+    : ID LSQBRACKET QUOTE ID QUOTE RSQBRACKET
     ;
     
 collection_accessor
