@@ -6,6 +6,7 @@ public class TemplateTests
 {
     [Theory]
     [InlineData("Assignment")]
+    [InlineData("CollectionAssignment")]
     public void Test1(string fileName)
     {
         var content = Helper.Read(fileName);

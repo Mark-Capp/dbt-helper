@@ -26,16 +26,21 @@ expression
     | left = expression operator = (MUL|DIV) right = expression        #eqMUL
     | left = expression operator = (ADD|SUB) right = expression        #eqAdd
     | func                                                             #eqFunc
+    | collection                                                       #eqCollection
+    | collection_accessor                                              #eqCollectionAccessor
     | DOUBLE                                                           #eqDbl
     | INT                                                              #eqInt
     | STRING                                                           #eqStr
     | BOOL                                                             #eqExBool
     | ID                                                               #eqVar
-    | collection                                                       #eqCollection
     ;
     
 collection
     : LSQBRACKET ((INT?) (COMMA INT)*?) RSQBRACKET
+    ;
+    
+collection_accessor
+    : ID LSQBRACKET INT RSQBRACKET
     ;
 
 boolean_expression

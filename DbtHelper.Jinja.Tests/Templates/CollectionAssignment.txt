@@ -1,0 +1,2 @@
+{% set row_class = [1,2,3] %}
+{{ row_class[0] }}

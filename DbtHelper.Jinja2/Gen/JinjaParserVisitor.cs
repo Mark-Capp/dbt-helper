@@ -62,6 +62,13 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAssignment_statement([NotNull] JinjaParser.Assignment_statementContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>eqCollectionAccessor</c>
+	/// labeled alternative in <see cref="JinjaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqCollectionAccessor([NotNull] JinjaParser.EqCollectionAccessorContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>eqInt</c>
 	/// labeled alternative in <see cref="JinjaParser.expression"/>.
 	/// </summary>
@@ -137,6 +144,12 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitCollection([NotNull] JinjaParser.CollectionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.collection_accessor"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCollection_accessor([NotNull] JinjaParser.Collection_accessorContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>eqExpression</c>
 	/// labeled alternative in <see cref="JinjaParser.boolean_expression"/>.
