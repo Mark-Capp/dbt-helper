@@ -31,6 +31,11 @@ expression
     | STRING                                                           #eqStr
     | BOOL                                                             #eqExBool
     | ID                                                               #eqVar
+    | collection                                                       #eqCollection
+    ;
+    
+collection
+    : LSQBRACKET ((INT?) (COMMA INT)*?) RSQBRACKET
     ;
 
 boolean_expression
@@ -107,7 +112,7 @@ endwhile_fragment: END_WHILE NEWLINE?;
 for_statement: for_fragment code_block*? endfor_fragment;
 
 for_fragment
-    : BLOCK_START SUB? FOR ID IN ID SUB? BLOCK_END NEWLINE?
+    : BLOCK_START SUB? FOR variable=ID IN list=ID SUB? BLOCK_END NEWLINE?
     ;
 
 endfor_fragment: BLOCK_START SUB? END_FOR SUB? BLOCK_END NEWLINE?;

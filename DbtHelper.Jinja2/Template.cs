@@ -24,7 +24,8 @@ public class Template
 
         var context = new Context();
         foreach (var block in blocks)
-            block.Render(context);
+            if (block is IRender renderBlock)
+                renderBlock.Render(context);
 
         return context.Content.ToString();
     }

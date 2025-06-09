@@ -22,6 +22,8 @@ NEQ: '!=';
 LPAREN: '(';
 RPAREN: ')';
 EQUALS: '=';
+RSQBRACKET : ']';
+LSQBRACKET : '[';
 
 EXPRESSION_START: '{{';
 EXPRESSION_END: '}}';

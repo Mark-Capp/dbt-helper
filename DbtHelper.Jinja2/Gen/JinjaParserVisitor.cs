@@ -97,6 +97,13 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEqStr([NotNull] JinjaParser.EqStrContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>eqExBool</c>
+	/// labeled alternative in <see cref="JinjaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqExBool([NotNull] JinjaParser.EqExBoolContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>eqAdd</c>
 	/// labeled alternative in <see cref="JinjaParser.expression"/>.
 	/// </summary>
@@ -111,12 +118,25 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEqVar([NotNull] JinjaParser.EqVarContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>eqCollection</c>
+	/// labeled alternative in <see cref="JinjaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqCollection([NotNull] JinjaParser.EqCollectionContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>eqMUL</c>
 	/// labeled alternative in <see cref="JinjaParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitEqMUL([NotNull] JinjaParser.EqMULContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.collection"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCollection([NotNull] JinjaParser.CollectionContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>eqExpression</c>
 	/// labeled alternative in <see cref="JinjaParser.boolean_expression"/>.
