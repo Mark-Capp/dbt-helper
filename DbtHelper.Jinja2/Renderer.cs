@@ -13,7 +13,9 @@ internal class Renderer
         var parser = new JinjaParser(tokens);
       
         var jinjaVisitor = new JinjaVisitor();
-        var expression = jinjaVisitor.Visit(parser.file());
+        var expression = jinjaVisitor
+            .Visit(parser.file());
+        
         return expression;
     }
 }

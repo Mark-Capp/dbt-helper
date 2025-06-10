@@ -20,6 +20,8 @@
 
     <ItemGroup>
       <None Remove="Templates\IfStatementTest.txt" />
+      <EmbeddedResource Include="Templates\Addition.txt" />
+      <EmbeddedResource Include="Templates\Addition.txt.rendered" />
       <EmbeddedResource Include="Templates\CollectionAssignment.txt" />
       <EmbeddedResource Include="Templates\CollectionAssignment.txt.rendered" />
       <EmbeddedResource Include="Templates\IfStatementTest.txt" />

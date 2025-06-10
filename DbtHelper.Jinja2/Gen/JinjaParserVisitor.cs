@@ -62,13 +62,6 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAssignment_statement([NotNull] JinjaParser.Assignment_statementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>eqCollectionAccessor</c>
-	/// labeled alternative in <see cref="JinjaParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitEqCollectionAccessor([NotNull] JinjaParser.EqCollectionAccessorContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>eqInt</c>
 	/// labeled alternative in <see cref="JinjaParser.expression"/>.
 	/// </summary>
@@ -90,19 +83,19 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEqDictionary([NotNull] JinjaParser.EqDictionaryContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>eqDictionaryAccessor</c>
+	/// labeled alternative in <see cref="JinjaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqDictionaryAccessor([NotNull] JinjaParser.EqDictionaryAccessorContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>eqFunc</c>
 	/// labeled alternative in <see cref="JinjaParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitEqFunc([NotNull] JinjaParser.EqFuncContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>eqPar</c>
-	/// labeled alternative in <see cref="JinjaParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitEqPar([NotNull] JinjaParser.EqParContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>eqStr</c>
 	/// labeled alternative in <see cref="JinjaParser.expression"/>.
@@ -117,6 +110,20 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitEqExBool([NotNull] JinjaParser.EqExBoolContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>eqCollectionAccessor</c>
+	/// labeled alternative in <see cref="JinjaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqCollectionAccessor([NotNull] JinjaParser.EqCollectionAccessorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>eqPar</c>
+	/// labeled alternative in <see cref="JinjaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqPar([NotNull] JinjaParser.EqParContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>eqAdd</c>
 	/// labeled alternative in <see cref="JinjaParser.expression"/>.
@@ -157,6 +164,24 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitDictionary([NotNull] JinjaParser.DictionaryContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.dictionary_fragment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDictionary_fragment([NotNull] JinjaParser.Dictionary_fragmentContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.dictionary_item"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDictionary_item([NotNull] JinjaParser.Dictionary_itemContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.dictionary_accessor"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDictionary_accessor([NotNull] JinjaParser.Dictionary_accessorContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="JinjaParser.collection_accessor"/>.
 	/// </summary>
