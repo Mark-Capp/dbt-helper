@@ -19,6 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Include="Templates\Subtraction.txt" />
+      <EmbeddedResource Include="Templates\Subtraction.txt.rendered" />
       <None Remove="Templates\IfStatementTest.txt" />
       <EmbeddedResource Include="Templates\Addition.txt" />
       <EmbeddedResource Include="Templates\Addition.txt.rendered" />

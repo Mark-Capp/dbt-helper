@@ -7,6 +7,7 @@ public class TemplateTests
     [Theory]
     [InlineData("Assignment")]
     [InlineData("Addition")]
+    [InlineData("Subtraction")]
     [InlineData("CollectionAssignment")]
     public void Test1(string fileName)
     {
