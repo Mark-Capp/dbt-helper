@@ -60,8 +60,9 @@ ID: ([a-zA-Z]) ([a-zA-Z] | [0-9] | '_')* ;
 WS: [ \t]->skip;
 NEWLINE: [\r\n]+;
 COMMENT: '{#' .*? '#}' NEWLINE ->skip;
-SYMBOLS: ('_'  | '/' | ';' | '="' | '"');
-TEXT : ([a-zA-Z0-9()\\/"';.*,] | SYMBOLS |NEWLINE | [ \t])*? NEWLINE;
+SYMBOLS: ('_'  | '/' | ';' | '="' | '"' );
+SPACE: ' ';
+TEXT : ([a-zA-Z0-9()\\/"';.*, ] | SYMBOLS | SPACE | NEWLINE | [ \t])*? NEWLINE;
 
 fragment
 ESC: '\\"'|'\\\\';
