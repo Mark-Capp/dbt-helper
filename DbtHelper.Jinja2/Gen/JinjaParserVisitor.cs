@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:/git/personal/dbt-helper/DbtHelper.Jinja2/Gen/JinjaParser.g4 by ANTLR 4.13.2
+// Generated from D:/personal/dbt-helper/DbtHelper.Jinja2/Gen/JinjaParser.g4 by ANTLR 4.13.2
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -375,4 +375,10 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitContents([NotNull] JinjaParser.ContentsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.space"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSpace([NotNull] JinjaParser.SpaceContext context);
 }

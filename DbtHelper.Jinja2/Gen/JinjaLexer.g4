@@ -57,12 +57,13 @@ IN: 'in';
 
 
 ID: ([a-zA-Z]) ([a-zA-Z] | [0-9] | '_')* ;
-WS: [ \t]->skip;
 NEWLINE: [\r\n]+;
+
 COMMENT: '{#' .*? '#}' NEWLINE ->skip;
 SYMBOLS: ('_'  | '/' | ';' | '="' | '"' );
 SPACE: ' ';
-TEXT : ([a-zA-Z0-9()\\/"';.*, ] | SYMBOLS | SPACE | NEWLINE | [ \t])*? NEWLINE;
+TEXT : ([a-zA-Z0-9()\\/"';.*,] | SYMBOLS | NEWLINE | [\t])+? NEWLINE;
+WS: [ \t]->skip;
 
 fragment
 ESC: '\\"'|'\\\\';
