@@ -22,19 +22,19 @@ assignment_statement
     : SET_BLOCK ID EQUALS expression BLOCK_END NEWLINE?
     ;
 expression
-    : LPAREN space expression space RPAREN space                                         #eqPar
-    | left = expression space operator = (MUL|DIV) space right = expression        #eqMUL
-    | left = expression space operator = (ADD|SUB) space right = expression        #eqAdd
+    : LPAREN  expression  RPAREN                                          #eqPar
+    | left = expression  operator = (MUL|DIV)  right = expression        #eqMUL
+    | left = expression  operator = (ADD|SUB)  right = expression        #eqAdd
     | func                                                             #eqFunc
     | collection                                                       #eqCollection
     | collection_accessor                                              #eqCollectionAccessor
     | dictionary                                                       #eqDictionary
     | dictionary_accessor                                              #eqDictionaryAccessor
-    | space DOUBLE space                                                           #eqDbl
-    | space INT space                                                           #eqInt
-    | space STRING space                                                          #eqStr
-    | space BOOL space                                                             #eqExBool
-    | space ID space                                                               #eqVar
+    |  DOUBLE                                                            #eqDbl
+    |  INT                                                            #eqInt
+    |  STRING                                                           #eqStr
+    |  BOOL                                                              #eqExBool
+    |  ID                                                                #eqVar
     ;
     
 collection
@@ -72,9 +72,9 @@ boolean_expression
     ;
 
 evaluation_statement
-    : EXPRESSION_START space (SUB)? space expression space (SUB)? space EXPRESSION_END NEWLINE?
-    | EXPRESSION_START space (SUB)? space boolean_expression space (SUB)? space EXPRESSION_END NEWLINE?
-    | EXPRESSION_START space (SUB)? space func space (SUB)? space EXPRESSION_END NEWLINE?
+    : EXPRESSION_START  (SUB)?  expression  (SUB)?  EXPRESSION_END NEWLINE?
+    | EXPRESSION_START  (SUB)?  boolean_expression  (SUB)?  EXPRESSION_END NEWLINE?
+    | EXPRESSION_START  (SUB)?  func  (SUB)?  EXPRESSION_END NEWLINE?
     ;
     
 macro_statement
@@ -96,11 +96,11 @@ variable_statement
 end_macro: BLOCK_START (SUB)? END_MACRO (SUB)? BLOCK_END;
     
 func
-    : space ID space LPAREN space (expression space (COMMA space expression space)*)* RPAREN
+    :  ID  LPAREN  (expression  (COMMA  expression )*)* RPAREN
     ;
     
 if_statement
-    : if_fragment space (code_block)*? (elif_statement | else_statement)? endif_fragment
+    : if_fragment  (code_block)*? (elif_statement | else_statement)? endif_fragment
     ;
     
 elif_statement
@@ -110,13 +110,13 @@ else_statement
     : else_fragment code_block*?;
 
 if_fragment
-    : BLOCK_START space (SUB)? space IF_WORD space LPAREN space boolean_expression space RPAREN space (SUB)? space BLOCK_END NEWLINE? 
-    | BLOCK_START space (SUB)? space IF_WORD space boolean_expression space (SUB)? space BLOCK_END NEWLINE? 
+    : BLOCK_START  (SUB)?  IF_WORD  LPAREN  boolean_expression  RPAREN  (SUB)?  BLOCK_END NEWLINE? 
+    | BLOCK_START  (SUB)?  IF_WORD  boolean_expression  (SUB)?  BLOCK_END NEWLINE? 
     ;
     
 elif_fragment: BLOCK_START (SUB)? ELIF LPAREN boolean_expression RPAREN (SUB)? BLOCK_END NEWLINE?;
 else_fragment: BLOCK_START (SUB)? ELSE (SUB)? BLOCK_END NEWLINE?;
-endif_fragment: BLOCK_START space (SUB)? space ENDIF space (SUB)? space BLOCK_END NEWLINE?;
+endif_fragment: BLOCK_START  (SUB)?  ENDIF  (SUB)?  BLOCK_END NEWLINE?;
 
 code_block
     : NEWLINE? body NEWLINE?
@@ -143,8 +143,7 @@ endfor_fragment: BLOCK_START SUB? END_FOR SUB? BLOCK_END NEWLINE?;
 body: contents;
 
 contents
-    : space TEXT space
-    | space ID space
+    : TEXT 
+    |  ID 
     ;
     
-space: (SPACE+)?;
