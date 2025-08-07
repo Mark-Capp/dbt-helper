@@ -144,6 +144,7 @@ body: contents;
 
 contents
     : TEXT 
-    |  ID 
+    | space ID space 
     ;
     
+space: SPACE*?;

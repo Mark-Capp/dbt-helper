@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using DbtHelper.Jinja2;
+using Jinja2;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);

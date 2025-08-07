@@ -1,6 +1,12 @@
 ﻿// DELETE THIS CONTENT IF YOU PUT COMBINED GRAMMAR IN Parser TAB
 lexer grammar JinjaLexer;
 
+
+
+
+
+
+
 COMMA : ',';
 INT: '-'? DIGIT+ ;
 DOUBLE: '-'? DIGIT+ '.' DIGIT+

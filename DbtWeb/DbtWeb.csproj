@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DbtHelper.Jinja2\DbtHelper.Jinja2.csproj" />
+      <ProjectReference Include="..\Jinja2\Jinja2.csproj" />
     </ItemGroup>
 
 </Project>
