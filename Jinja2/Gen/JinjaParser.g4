@@ -23,7 +23,11 @@ statement
     : OPEN_STMT statement_body CLOSE_STMT;
     
 statement_body
-    : IF ID
+    : IF boolean_expression
+    ;
+   
+boolean_expression
+    : ID
     ;
     
 comment
