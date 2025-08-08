@@ -2,7 +2,11 @@
 options { tokenVocab=JinjaLexer; }
 
 template 
-    : ( text | expression | statement | comment)* EOF
+    : ( text | expression | statement | macro | comment)* EOF
+    ;
+    
+macro_template 
+    : ( text | expression | statement | comment)*
     ;
     
 expression
@@ -17,17 +21,33 @@ expression_body
     | ID #eqID
     | INT #eqINT
     | STRING #eqString
+    | functionCall #eqFunctionCall
     ;
     
 statement
-    : OPEN_STMT statement_body CLOSE_STMT;
+    : OPEN_STMT statement_body CLOSE_STMT
+    ;
     
 statement_body
-    : IF boolean_expression
+    : IF boolean_expression #eqIF
+    ;
+    
+macro
+    : OPEN_STMT MACRO ID LPARAN ID RPARAN CLOSE_STMT
+        macro_template
+     OPEN_STMT END_MACRO CLOSE_STMT  #eqMacro
     ;
    
 boolean_expression
     : ID
+    ;
+    
+functionCall
+    : ID LPARAN argList? RPARAN
+    ;
+
+argList
+    : expression_body (COMMA expression_body)*
     ;
     
 comment

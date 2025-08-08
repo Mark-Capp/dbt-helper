@@ -33,6 +33,7 @@ mode EXPR;
   // …more tokens as needed
   LPARAN: '(';
   RPARAN: ')';
+  COMMA: ',';
 
 mode STMT;
   CLOSE_STMT : '%}' -> popMode, type(CLOSE_STMT);
@@ -42,6 +43,8 @@ mode STMT;
   FOR        : 'for' ;
   END        : 'end' ;
   EQ         : '==' ;
+  MACRO      : 'macro';
+  END_MACRO  : 'endmacro';
   
   STMT_ID : ID -> type(ID);
   STMT_INT: INT -> type(INT);
@@ -55,6 +58,7 @@ mode STMT;
   
   STMT_LPARAN: LPARAN -> type(LPARAN);
   STMT_RPARAN: RPARAN -> type(RPARAN);
+  STMT_COMMA: COMMA -> type(COMMA);
 
 mode COMMENT;
   CLOSE_COMMENT : '#}' -> popMode, type(CLOSE_COMMENT);

@@ -1,6 +1,8 @@
+using System.Numerics;
+
 namespace Jinja2;
 
-public class IntBlock(int value) : ExpressionBlock
+public class IntBlock(int value) : ExpressionBlock, IAdditionOperators<IntBlock, IntBlock, int>
 {
     public override object GetValue(Context context) => value;
 
@@ -8,17 +10,11 @@ public class IntBlock(int value) : ExpressionBlock
     {
         return right switch
         {
-            IntBlock intBlock => Add(context, intBlock),
+            IntBlock intBlock => this + intBlock,
             IdBlock idBlock => idBlock.Add(context, this),
         };
     }
 
-    public int Add(Context context, IntBlock block)
-    {
-        var right = block.GetValue(context) as int? ?? 0;
-        return value + right;
-    }
-    
     public int Mul(Context context, IntBlock block)
     {
         var right = block.GetValue(context) as int? ?? 0;
@@ -35,5 +31,13 @@ public class IntBlock(int value) : ExpressionBlock
     {
         var right = block.GetValue(context) as int? ?? 0;
         return value / right;
+    }
+
+    public static int operator +(IntBlock left, IntBlock right)
+    {
+        var context = new Context();
+        var l = left.GetValue(context) as int? ?? 0;
+        var r = right.GetValue(context) as int? ?? 0;
+        return l + r;
     }
 }

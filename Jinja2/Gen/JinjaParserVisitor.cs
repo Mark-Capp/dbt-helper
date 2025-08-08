@@ -38,6 +38,12 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitTemplate([NotNull] JinjaParser.TemplateContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.macro_template"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMacro_template([NotNull] JinjaParser.Macro_templateContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="JinjaParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -50,6 +56,13 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitEqINT([NotNull] JinjaParser.EqINTContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>eqFunctionCall</c>
+	/// labeled alternative in <see cref="JinjaParser.expression_body"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqFunctionCall([NotNull] JinjaParser.EqFunctionCallContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>eqAdd</c>
 	/// labeled alternative in <see cref="JinjaParser.expression_body"/>.
@@ -99,11 +112,37 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] JinjaParser.StatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="JinjaParser.statement_body"/>.
+	/// Visit a parse tree produced by the <c>eqIF</c>
+	/// labeled alternative in <see cref="JinjaParser.statement_body"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitStatement_body([NotNull] JinjaParser.Statement_bodyContext context);
+	Result VisitEqIF([NotNull] JinjaParser.EqIFContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>eqMacro</c>
+	/// labeled alternative in <see cref="JinjaParser.macro"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqMacro([NotNull] JinjaParser.EqMacroContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.boolean_expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBoolean_expression([NotNull] JinjaParser.Boolean_expressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.functionCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionCall([NotNull] JinjaParser.FunctionCallContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.argList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArgList([NotNull] JinjaParser.ArgListContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="JinjaParser.comment"/>.
 	/// </summary>

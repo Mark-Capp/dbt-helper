@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Dbt\Dbt.csproj" />
       <ProjectReference Include="..\Jinja2\Jinja2.csproj" />
     </ItemGroup>
 
