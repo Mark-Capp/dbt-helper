@@ -34,6 +34,5 @@ public class IdBlock(string name) : ExpressionBlock, IRender
         
         var command = new SubCommand(value, expressionBlock);
         return command.Execute(context);
-        
     }
 }
