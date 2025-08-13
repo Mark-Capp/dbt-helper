@@ -126,6 +126,18 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEqMacro([NotNull] JinjaParser.EqMacroContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.params"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParams([NotNull] JinjaParser.ParamsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.param"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParam([NotNull] JinjaParser.ParamContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="JinjaParser.boolean_expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -5,7 +5,6 @@ public class FunctionCallBlock(
     List<ExpressionBlock> args): Block, IRender
 {
     
-    
     public void Render(Context context)
     {
         if (!context.Macros.TryGetValue(name, out var macro))
@@ -14,10 +13,10 @@ public class FunctionCallBlock(
         }
         
         var variables = new Dictionary<string, ExpressionBlock>();
-        for (var index = 0; index < macro.ArgNames.Length; index++)
+        for (var index = 0; index < macro.ArgNames.Keys.Count; index++)
         {
-            var arg = macro.ArgNames[index];
-            variables.Add(arg, args[index]);
+            var key = macro.ArgNames.Keys.ElementAt(index);
+            variables.Add(key, index >= args.Count ? macro.ArgNames[key] : args[index]);
         }
 
         var macroCotext = new Context()

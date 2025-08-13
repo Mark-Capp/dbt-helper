@@ -1,21 +1,19 @@
 namespace Jinja2;
 
 public class MacroBlock(string name,
-    string[] argNames,
+    Dictionary<string, ExpressionBlock?> args,
     Block[] body) : Block, IRender
 {
-    public string[] ArgNames { get; } = argNames;
+    public Dictionary<string, ExpressionBlock?> ArgNames { get; } = args;
     
     public void Render(Context context) 
         => context.Macros.TryAdd(name, this);
 
     public void Execute(Context context)
     {
-        
         foreach (var block in body) {
             if(block is IRender render)
                 render.Render(context);
         }
-        
     }
 }

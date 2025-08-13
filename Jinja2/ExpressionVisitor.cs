@@ -41,19 +41,38 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
     
     public override Block VisitEqID(JinjaParser.EqIDContext context) 
         => new IdBlock(context.ID().GetText());
+    
+    public override Block VisitEqString(JinjaParser.EqStringContext context) 
+        => new StringBlock(context.STRING().GetText());
 
     public override Block VisitEqMacro(JinjaParser.EqMacroContext context)
     {
-        var name = context.ID()[0];
-        var args = context.ID()[1..];
+        var name = context.ID();
+        var args = context.@params().param();
+        
+        var dictionary = new Dictionary<string, ExpressionBlock?>();
+        foreach (var param in args)
+        {
+            var parameter = param.ID();
+            if (param.expression_body() != null)
+            {
+                var defaultValue = Visit(param.expression_body()) as ExpressionBlock;
+                dictionary.Add(parameter.GetText(), defaultValue);
+            }
+            else
+            {
+                dictionary.Add(parameter.GetText(), null);
+            }
+        }
         
         var jinjaVisitor = new JinjaVisitor();
         var body = jinjaVisitor.Visit(context.macro_template());
         
         return new MacroBlock(name.GetText(),
-            args.Select(x => x.GetText()).ToArray(),
+            dictionary,
             body.ToArray());
     }
+
 
     public override Block VisitFunctionCall(JinjaParser.FunctionCallContext context)
     {

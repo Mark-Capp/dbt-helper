@@ -33,10 +33,16 @@ statement_body
     ;
     
 macro
-    : OPEN_STMT MACRO ID LPARAN ID RPARAN CLOSE_STMT
+    : OPEN_STMT MACRO ID LPARAN (params)? RPARAN CLOSE_STMT
         macro_template
      OPEN_STMT END_MACRO CLOSE_STMT  #eqMacro
     ;
+    
+params
+    : param (COMMA param)*
+    ;
+
+param: id=ID (EQUALS value=expression_body)?;
    
 boolean_expression
     : ID
