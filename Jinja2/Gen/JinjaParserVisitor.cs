@@ -85,6 +85,13 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEqID([NotNull] JinjaParser.EqIDContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>eqConcat</c>
+	/// labeled alternative in <see cref="JinjaParser.expression_body"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqConcat([NotNull] JinjaParser.EqConcatContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>eqMul</c>
 	/// labeled alternative in <see cref="JinjaParser.expression_body"/>.
 	/// </summary>
@@ -105,6 +112,18 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitEqString([NotNull] JinjaParser.EqStringContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.concat"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitConcat([NotNull] JinjaParser.ConcatContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.concat_expression_body"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitConcat_expression_body([NotNull] JinjaParser.Concat_expression_bodyContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="JinjaParser.statement"/>.
 	/// </summary>

@@ -22,6 +22,18 @@ expression_body
     | INT #eqINT
     | STRING #eqString
     | functionCall #eqFunctionCall
+    | concat+ #eqConcat
+    ;
+    
+concat
+    : LPARAN concat RPARAN
+    | left=concat_expression_body (CONCAT right=concat_expression_body)+
+    ;
+    
+concat_expression_body
+    : ID
+    | STRING
+    | INT
     ;
     
 statement

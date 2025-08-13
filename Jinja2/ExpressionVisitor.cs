@@ -82,4 +82,33 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
             .Select(expression => expression!).ToList();
         return new FunctionCallBlock(name, args);
     }
+
+    public override Block VisitConcat(JinjaParser.ConcatContext context)
+    {
+        var innerConcat = context.concat();
+        if (innerConcat != null)
+        {
+            return Visit(innerConcat);
+        }
+
+        var expressionBlocks = context
+            .concat_expression_body()
+            .Select(value => Visit(value) as ExpressionBlock)
+            .ToList();
+
+        return new ConcatBlock(expressionBlocks);
+    }
+
+    public override Block VisitConcat_expression_body(JinjaParser.Concat_expression_bodyContext context)
+    {
+        if (context.ID() != null)
+            return new IdBlock(context.ID().GetText());
+        if(context.STRING() != null)
+            return new StringBlock(context.STRING().GetText());
+        if(context.INT() != null)
+            return new IntBlock(int.Parse(context.INT().GetText()));
+
+        return null;
+    }
+    
 }
