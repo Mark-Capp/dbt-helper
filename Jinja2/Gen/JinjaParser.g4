@@ -26,8 +26,8 @@ expression_body
     ;
     
 concat
-    : LPARAN concat RPARAN
-    | left=concat_expression_body (CONCAT right=concat_expression_body)+
+    : LPARAN concat RPARAN #eqInnerConcat
+    | left=concat_expression_body (CONCAT right=concat_expression_body)+ #eqOuterConcat
     ;
     
 concat_expression_body

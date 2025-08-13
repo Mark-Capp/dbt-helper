@@ -164,7 +164,8 @@ public partial class JinjaParserBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// <return>The visitor result.</return>
 	public virtual Result VisitEqString([NotNull] JinjaParser.EqStringContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="JinjaParser.concat"/>.
+	/// Visit a parse tree produced by the <c>eqInnerConcat</c>
+	/// labeled alternative in <see cref="JinjaParser.concat"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -172,7 +173,18 @@ public partial class JinjaParserBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitConcat([NotNull] JinjaParser.ConcatContext context) { return VisitChildren(context); }
+	public virtual Result VisitEqInnerConcat([NotNull] JinjaParser.EqInnerConcatContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>eqOuterConcat</c>
+	/// labeled alternative in <see cref="JinjaParser.concat"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitEqOuterConcat([NotNull] JinjaParser.EqOuterConcatContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="JinjaParser.concat_expression_body"/>.
 	/// <para>

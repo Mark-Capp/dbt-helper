@@ -684,13 +684,20 @@ public partial class JinjaParser : Parser {
 	}
 
 	public partial class ConcatContext : ParserRuleContext {
+		public ConcatContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_concat; } }
+	 
+		public ConcatContext() { }
+		public virtual void CopyFrom(ConcatContext context) {
+			base.CopyFrom(context);
+		}
+	}
+	public partial class EqOuterConcatContext : ConcatContext {
 		public Concat_expression_bodyContext left;
 		public Concat_expression_bodyContext right;
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPARAN() { return GetToken(JinjaParser.LPARAN, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ConcatContext concat() {
-			return GetRuleContext<ConcatContext>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPARAN() { return GetToken(JinjaParser.RPARAN, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public Concat_expression_bodyContext[] concat_expression_body() {
 			return GetRuleContexts<Concat_expression_bodyContext>();
 		}
@@ -701,15 +708,25 @@ public partial class JinjaParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CONCAT(int i) {
 			return GetToken(JinjaParser.CONCAT, i);
 		}
-		public ConcatContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_concat; } }
+		public EqOuterConcatContext(ConcatContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IJinjaParserVisitor<TResult> typedVisitor = visitor as IJinjaParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitConcat(this);
+			if (typedVisitor != null) return typedVisitor.VisitEqOuterConcat(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class EqInnerConcatContext : ConcatContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPARAN() { return GetToken(JinjaParser.LPARAN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ConcatContext concat() {
+			return GetRuleContext<ConcatContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPARAN() { return GetToken(JinjaParser.RPARAN, 0); }
+		public EqInnerConcatContext(ConcatContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJinjaParserVisitor<TResult> typedVisitor = visitor as IJinjaParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitEqInnerConcat(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -724,6 +741,7 @@ public partial class JinjaParser : Parser {
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case LPARAN:
+				_localctx = new EqInnerConcatContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
 				State = 88;
@@ -737,10 +755,11 @@ public partial class JinjaParser : Parser {
 			case ID:
 			case INT:
 			case STRING:
+				_localctx = new EqOuterConcatContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
 				State = 92;
-				_localctx.left = concat_expression_body();
+				((EqOuterConcatContext)_localctx).left = concat_expression_body();
 				State = 95;
 				ErrorHandler.Sync(this);
 				_alt = 1;
@@ -752,7 +771,7 @@ public partial class JinjaParser : Parser {
 						State = 93;
 						Match(CONCAT);
 						State = 94;
-						_localctx.right = concat_expression_body();
+						((EqOuterConcatContext)_localctx).right = concat_expression_body();
 						}
 						}
 						break;

@@ -12,6 +12,7 @@ public class IntBlock(int value) : ExpressionBlock, IAdditionOperators<IntBlock,
         {
             IntBlock intBlock => this + intBlock,
             IdBlock idBlock => idBlock.Add(context, this),
+            StringBlock stringBlock => $"{GetValue(context)}{stringBlock.GetValue(context)}"
         };
     }
 

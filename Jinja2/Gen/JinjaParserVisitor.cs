@@ -113,11 +113,19 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEqString([NotNull] JinjaParser.EqStringContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="JinjaParser.concat"/>.
+	/// Visit a parse tree produced by the <c>eqInnerConcat</c>
+	/// labeled alternative in <see cref="JinjaParser.concat"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitConcat([NotNull] JinjaParser.ConcatContext context);
+	Result VisitEqInnerConcat([NotNull] JinjaParser.EqInnerConcatContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>eqOuterConcat</c>
+	/// labeled alternative in <see cref="JinjaParser.concat"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqOuterConcat([NotNull] JinjaParser.EqOuterConcatContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="JinjaParser.concat_expression_body"/>.
 	/// </summary>
