@@ -38,10 +38,9 @@ public class MacroCallBlock(
         {
             Macros = context.Macros,
             Variables = variables,
-            Content = string.Empty
         };
         
         macro.Execute(macroCotext);
-        RenderableBlock.Render(context, this, macroCotext.Content);
+        RenderableBlock.Render(context, this, macroCotext.Builder.ToString());
     }
 }

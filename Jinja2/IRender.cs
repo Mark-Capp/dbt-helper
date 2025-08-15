@@ -14,8 +14,9 @@ public static class RenderableBlock
             return;
         }
         
-        context.Content += content;
+        context.Builder.Append(content);
     }
+    
 }
 
 public interface IPerformFunction

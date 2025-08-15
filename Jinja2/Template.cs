@@ -1,37 +1,26 @@
 ﻿namespace Jinja2;
 
-public class Template
+public class Template(string[] templateContent)
 {
-    private readonly Renderer _renderer;
-    private readonly string[] _content;
-
-    private Template(Renderer renderer, string[] content)
-    {
-        _renderer = renderer;
-        _content = content;
-    }
-
     public static Template FromString(string content) 
-        => new(new Renderer(), [content]);
+        => new([content]);
     
     public static Template FromString(string[] content) 
-        => new(new Renderer(), content);
+        => new(content);
 
     public string Render() => Render(new Context());
 
     public string Render(Context context) 
-        => CreateContext(context).Content;
+        => CreateContext(context).Builder.ToString();
 
     public Context CreateContext(Context? context = null)
     {
         context ??= new Context();
-        foreach (var content in _content)
+        foreach (var content in templateContent)
         {
             var blocks = Renderer.Render(content);
             if (blocks == null)
-            {
                 continue;
-            }
             
             foreach (var block in blocks)
                 if (block is IRender renderBlock)
