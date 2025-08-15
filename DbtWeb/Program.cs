@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Dbt;
 using Jinja2;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,8 +30,8 @@ app.MapGet("/render", () => Results.Ok());
 app.MapPost("/render", ([FromBody] Request request, ILogger<Program> logger) =>
     {
         logger.LogInformation("Rendering");
-        var template = Template.FromString(request.Content);
-        var renderedContent = template.Render();
+        var runCommand = new RunCommand();
+        var renderedContent = runCommand.Execute(request.Content);
         
         logger.LogInformation("Rendered: {content}", renderedContent);
         return Results.Ok(new { Content =renderedContent});

@@ -10,4 +10,11 @@
       <ProjectReference Include="..\Jinja2\Jinja2.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Functions\ref.jinja" />
+      <EmbeddedResource Include="Functions\ref.jinja" />
+      <None Remove="Functions\source.jinja" />
+      <EmbeddedResource Include="Functions\source.jinja" />
+    </ItemGroup>
+
 </Project>
