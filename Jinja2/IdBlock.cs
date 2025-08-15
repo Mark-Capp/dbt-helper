@@ -13,6 +13,8 @@ public class IdBlock(string name) : ExpressionBlock, IRender
 
     public override object? GetValue(Context context) 
         => !context.Variables.TryGetValue(name, out var value) ? null : value.GetValue(context);
+    
+    public ExpressionBlock GetBlock(Context context)=> context.Variables.TryGetValue(name , out var value) ? value : new IntBlock(0); 
 
     public object? Add(Context context, ExpressionBlock block)
     {

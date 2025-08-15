@@ -4,15 +4,15 @@ namespace Jinja2;
 
 public class ConcatBlock(List<ExpressionBlock?> expressionBlocks) : ExpressionBlock, IRender, IPerformFunction
 {
+    private StringBlock? _cache;
+    
     public override object GetValue(Context context)
     {
-        var builder = new StringBuilder();
-        foreach (var expressionBlock in expressionBlocks.OfType<ExpressionBlock>())
-        {
-            builder.Append(expressionBlock.GetValue(context));
-        }
+        if (_cache is not null)
+            return _cache.GetValue(context);
 
-        return builder.ToString();
+        _cache = BuildCache(context);
+        return _cache.GetValue(context);
     }
 
     public void Render(Context context) 
@@ -20,9 +20,21 @@ public class ConcatBlock(List<ExpressionBlock?> expressionBlocks) : ExpressionBl
 
     public void Perform(string name, Context context)
     {
-        foreach (var expressionBlock in expressionBlocks.OfType<IPerformFunction>())
+        _cache ??= BuildCache(context);
+        _cache.Perform(name, context);
+    }
+
+    private StringBlock BuildCache(Context context)
+    {
+        var builder = new StringBuilder();
+        foreach (var expressionBlock in expressionBlocks.OfType<ExpressionBlock>())
         {
-            expressionBlock.Perform(name, context);
+            builder.Append(expressionBlock.GetValue(context));
         }
+
+        // We no longer need these because we have the result
+        expressionBlocks.Clear();
+
+        return new StringBlock(builder.ToString(), false);
     }
 }

@@ -18,7 +18,6 @@ mode EXPR;
   CLOSE_EXPR : '}}' -> popMode, type(CLOSE_EXPR);
   // You can embed a small expression sub-lexer here (identifiers, literals…)
   WS_EXPR    : [ \t\r\n]+ -> skip;
-  SET       : 'set';
   
   ID         : [a-zA-Z_][a-zA-Z0-9_]*;
   INT        : [0-9]+;
@@ -41,6 +40,7 @@ mode STMT;
   CLOSE_STMT : '%}' -> popMode, type(CLOSE_STMT);
   WS_STMT    : [ \t\r\n]+ -> skip ;
   
+  SET       : 'set';
   IF         : 'if' ;
   FOR        : 'for' ;
   END        : 'end' ;

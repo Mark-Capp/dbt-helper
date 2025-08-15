@@ -71,13 +71,6 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEqAdd([NotNull] JinjaParser.EqAddContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>eqAssign</c>
-	/// labeled alternative in <see cref="JinjaParser.expression_body"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitEqAssign([NotNull] JinjaParser.EqAssignContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>eqID</c>
 	/// labeled alternative in <see cref="JinjaParser.expression_body"/>.
 	/// </summary>
@@ -166,6 +159,13 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitEqIF([NotNull] JinjaParser.EqIFContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>eqAssign</c>
+	/// labeled alternative in <see cref="JinjaParser.statement_body"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqAssign([NotNull] JinjaParser.EqAssignContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>eqMacro</c>
 	/// labeled alternative in <see cref="JinjaParser.macro"/>.

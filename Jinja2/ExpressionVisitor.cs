@@ -91,10 +91,11 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
     public override Block VisitFunctionCall(JinjaParser.FunctionCallContext context)
     {
         var name = context.ID().GetText();
-        var args = context.argList().expression_body()
+        var args = context.argList()?
+            .expression_body()
             .Select(block => Visit(block) as ExpressionBlock)
             .Select(expression => expression!).ToList();
-        return new MacroCallBlock(name, args);
+        return new MacroCallBlock(name, args ?? []);
     }
 
     public override Block VisitEqInnerConcat(JinjaParser.EqInnerConcatContext context) => Visit(context.concat());

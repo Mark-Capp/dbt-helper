@@ -16,7 +16,22 @@ public class MacroCallBlock(
         for (var index = 0; index < macro.ArgNames.Keys.Count; index++)
         {
             var key = macro.ArgNames.Keys.ElementAt(index);
-            variables.Add(key, index >= args.Count ? macro.ArgNames[key] : args[index]);
+            var argToAdd = macro.ArgNames[key];
+            
+            if (index < args.Count)
+            {
+                var arg = args[index];
+                if (arg is IdBlock idBlock)
+                {
+                   argToAdd =  new ValueBlock(idBlock.GetValue(context));
+                }
+                else
+                {
+                    argToAdd = arg;
+                }
+            }
+            
+            variables.Add(key, argToAdd);
         }
 
         var macroCotext = new Context()

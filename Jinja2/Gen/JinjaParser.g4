@@ -10,14 +10,13 @@ macro_template
     ;
     
 expression
-    : OPEN_EXPR expression_body CLOSE_EXPR
+    : OPEN_EXPR (MINUS)? expression_body (MINUS)? CLOSE_EXPR
     ;
     
 expression_body
     : LPARAN expression_body RPARAN #eqParan
     | left = expression_body  operator = (PLUS|MINUS)  right = expression_body        #eqAdd
     | left = expression_body operator = (MUL|DIV) right = expression_body #eqMul
-    | SET ID EQUALS expression_body #eqAssign
     | ID #eqID
     | INT #eqINT
     | STRING #eqString
@@ -40,17 +39,18 @@ concat_expression_body
     ;
     
 statement
-    : OPEN_STMT statement_body CLOSE_STMT
+    : OPEN_STMT (MINUS)? statement_body (MINUS)? CLOSE_STMT
     ;
     
 statement_body
     : IF boolean_expression #eqIF
+    | SET ID EQUALS expression_body #eqAssign
     ;
     
 macro
-    : OPEN_STMT MACRO ID LPARAN (params)? RPARAN CLOSE_STMT
+    : OPEN_STMT (MINUS)? MACRO ID LPARAN (params)? RPARAN  (MINUS)? CLOSE_STMT
         macro_template
-     OPEN_STMT END_MACRO CLOSE_STMT  #eqMacro
+     OPEN_STMT (MINUS)? END_MACRO (MINUS)? CLOSE_STMT  #eqMacro
     ;
     
 params
@@ -72,6 +72,6 @@ argList
     ;
     
 comment
-    : OPEN_COMMENT COMMENT_TEXT CLOSE_COMMENT;
+    : OPEN_COMMENT (COMMENT_TEXT)* CLOSE_COMMENT;
     
 text : TEXT;

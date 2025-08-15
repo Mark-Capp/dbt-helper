@@ -5,9 +5,9 @@ public class StringBlock : ExpressionBlock, IRender, IPerformFunction
     private string _value;
     private readonly Dictionary<string, Action<Context>> _functions;
     
-    public StringBlock(string value)
+    public StringBlock(string value, bool cutStartAndEnd = true)
     {
-        _value = value[1..^1];
+        _value = cutStartAndEnd ? value[1..^1] : value;
         _functions = new Dictionary<string, Action<Context>>
         {
             { "upper", ToUpper }
