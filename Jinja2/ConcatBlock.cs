@@ -15,8 +15,8 @@ public class ConcatBlock(List<ExpressionBlock?> expressionBlocks) : ExpressionBl
         return _cache.GetValue(context);
     }
 
-    public void Render(Context context) 
-        => context.Content += GetValue(context);
+    public void Render(Context context)
+        => RenderableBlock.Render(context, this, GetValue(context).ToString() ?? string.Empty);
 
     public void Perform(string name, Context context)
     {

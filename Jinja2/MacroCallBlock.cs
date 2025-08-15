@@ -42,6 +42,6 @@ public class MacroCallBlock(
         };
         
         macro.Execute(macroCotext);
-        context.Content += macroCotext.Content;
+        RenderableBlock.Render(context, this, macroCotext.Content);
     }
 }

@@ -19,5 +19,6 @@ public class MathBlock(
         return command.Execute(context);
     }
 
-    public void Render(Context context) => context.Content+= GetValue(context);
+    public void Render(Context context) 
+        => RenderableBlock.Render(context, this, GetValue(context)?.ToString() ?? string.Empty);
 }

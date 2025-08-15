@@ -5,8 +5,12 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
     public override Block VisitText(JinjaParser.TextContext context)
         => new TextBlock(context.GetText());
 
-    public override Block VisitExpression(JinjaParser.ExpressionContext context) 
-        => Visit(context.expression_body());
+    public override Block VisitExpression(JinjaParser.ExpressionContext context)
+    {
+        var block = Visit(context.expression_body());
+        block.ShouldStripNewLines = context.MINUS() != null;
+        return block;
+    }
 
     public override Block VisitStatement(JinjaParser.StatementContext context) 
         => Visit(context.statement_body());
@@ -70,10 +74,18 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
         
         var jinjaVisitor = new JinjaVisitor();
         var body = jinjaVisitor.Visit(context.macro_template());
+        foreach (var bodyBlocks in body)
+        {
+            bodyBlocks.ShouldStripNewLines = context.MINUS() != null;
+        }
         
-        return new MacroBlock(name.GetText(),
+        var block =  new MacroBlock(name.GetText(),
             dictionary,
-            body.ToArray());
+            body.ToArray())
+        {
+            ShouldStripNewLines = context.MINUS() != null
+        };
+        return block;
     }
 
     public override Block VisitEqConcatFuntion(JinjaParser.EqConcatFuntionContext context)

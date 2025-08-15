@@ -3,6 +3,10 @@ namespace Jinja2;
 public class TextBlock(string content) 
     : Block, IRender
 {
-    public void Render(Context context) 
-        => context.Content += content;
+    public void Render(Context context)
+    {
+        
+        RenderableBlock.Render(context, this, content);
+
+    }
 }

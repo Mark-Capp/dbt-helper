@@ -1,3 +1,7 @@
 namespace Jinja2;
 
-public abstract class Block;
+public interface IBlock;
+public abstract class Block
+{
+    public bool ShouldStripNewLines { get; set; }
+}

@@ -8,7 +8,8 @@ public class IdBlock(string name) : ExpressionBlock, IRender
         {
             return;
         }
-        context.Content += value.GetValue(context);
+        
+        RenderableBlock.Render(context, this, value.GetValue(context)?.ToString() ?? string.Empty);
     }
 
     public override object? GetValue(Context context) 

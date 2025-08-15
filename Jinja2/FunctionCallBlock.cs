@@ -15,5 +15,7 @@ public class FunctionCallBlock(ExpressionBlock subject, List<string> functions)
         return subject.GetValue(context);
     }
 
-    public void Render(Context context) => context.Content += GetValue(context);
+    public void Render(Context context)
+        => RenderableBlock.Render(context, this, GetValue(context)?.ToString() ?? string.Empty);
+
 }

@@ -16,7 +16,9 @@ public class StringBlock : ExpressionBlock, IRender, IPerformFunction
 
     public override object GetValue(Context context) => _value;
 
-    public void Render(Context context) => context.Content += _value;
+    public void Render(Context context)
+        => RenderableBlock.Render(context, this, _value);
+
 
     public object Add(Context context, ExpressionBlock right)
     {
