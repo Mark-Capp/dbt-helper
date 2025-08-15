@@ -1,31 +1,31 @@
 namespace Jinja2;
 
-internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
+internal class ExpressionVisitor : JinjaParserBaseVisitor<IBlock>
 {
-    public override Block VisitText(JinjaParser.TextContext context)
+    public override IBlock VisitText(JinjaParser.TextContext context)
         => new TextBlock(context.GetText());
 
-    public override Block VisitExpression(JinjaParser.ExpressionContext context)
+    public override IBlock VisitExpression(JinjaParser.ExpressionContext context)
     {
         var block = Visit(context.expression_body());
         block.ShouldStripNewLines = context.MINUS() != null;
         return block;
     }
 
-    public override Block VisitStatement(JinjaParser.StatementContext context) 
+    public override IBlock VisitStatement(JinjaParser.StatementContext context) 
         => Visit(context.statement_body());
 
-    public override Block VisitEqParan(JinjaParser.EqParanContext context) 
+    public override IBlock VisitEqParan(JinjaParser.EqParanContext context) 
         => Visit(context.expression_body());
 
-    public override Block VisitEqAssign(JinjaParser.EqAssignContext context)
+    public override IBlock VisitEqAssign(JinjaParser.EqAssignContext context)
     {
         var name = context.ID().GetText();
         var expression = Visit(context.expression_body()) as ExpressionBlock;
         return new SetBlock(name, expression!);
     }
 
-    public override Block VisitEqAdd(JinjaParser.EqAddContext context)
+    public override IBlock VisitEqAdd(JinjaParser.EqAddContext context)
     {
         var left = Visit(context.left) as ExpressionBlock;
         var right = Visit(context.right) as ExpressionBlock;
@@ -34,7 +34,7 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
             context.@operator.Type == JinjaLexer.PLUS ? Operator.Add : Operator.Subtract);
     }
     
-    public override Block VisitEqMul(JinjaParser.EqMulContext context)
+    public override IBlock VisitEqMul(JinjaParser.EqMulContext context)
     {
         var left = Visit(context.left) as ExpressionBlock;
         var right = Visit(context.right) as ExpressionBlock;
@@ -43,16 +43,16 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
             context.@operator.Type == JinjaLexer.MUL ? Operator.Mul : Operator.Div);
     }
 
-    public override Block VisitEqINT(JinjaParser.EqINTContext context) 
+    public override IBlock VisitEqINT(JinjaParser.EqINTContext context) 
         => new IntBlock(int.Parse(context.INT().GetText()));
     
-    public override Block VisitEqID(JinjaParser.EqIDContext context) 
+    public override IBlock VisitEqID(JinjaParser.EqIDContext context) 
         => new IdBlock(context.ID().GetText());
     
-    public override Block VisitEqString(JinjaParser.EqStringContext context) 
+    public override IBlock VisitEqString(JinjaParser.EqStringContext context) 
         => new StringBlock(context.STRING().GetText());
 
-    public override Block VisitEqMacro(JinjaParser.EqMacroContext context)
+    public override IBlock VisitEqMacro(JinjaParser.EqMacroContext context)
     {
         var name = context.ID();
         var args = context.@params().param();
@@ -88,7 +88,7 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
         return block;
     }
 
-    public override Block VisitEqConcatFuntion(JinjaParser.EqConcatFuntionContext context)
+    public override IBlock VisitEqConcatFuntion(JinjaParser.EqConcatFuntionContext context)
     {
         var concat = context.concat()
             .Select(block => Visit(block) as ExpressionBlock)
@@ -100,7 +100,7 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
         return new FunctionCallBlock(concatBlock, [function]);
     }
 
-    public override Block VisitFunctionCall(JinjaParser.FunctionCallContext context)
+    public override IBlock VisitFunctionCall(JinjaParser.FunctionCallContext context)
     {
         var name = context.ID().GetText();
         var args = context.argList()?
@@ -110,9 +110,9 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
         return new MacroCallBlock(name, args ?? []);
     }
 
-    public override Block VisitEqInnerConcat(JinjaParser.EqInnerConcatContext context) => Visit(context.concat());
+    public override IBlock VisitEqInnerConcat(JinjaParser.EqInnerConcatContext context) => Visit(context.concat());
 
-    public override Block VisitEqOuterConcat(JinjaParser.EqOuterConcatContext context)
+    public override IBlock VisitEqOuterConcat(JinjaParser.EqOuterConcatContext context)
     {
         var expressionBlocks = context
             .concat_expression_body()
@@ -122,7 +122,7 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
         return new ConcatBlock(expressionBlocks);
     }
 
-    public override Block VisitConcat_expression_body(JinjaParser.Concat_expression_bodyContext context)
+    public override IBlock VisitConcat_expression_body(JinjaParser.Concat_expression_bodyContext context)
     {
         if (context.ID() != null)
             return new IdBlock(context.ID().GetText());

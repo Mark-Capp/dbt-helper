@@ -4,7 +4,7 @@ namespace Jinja2;
 
 internal class Renderer
 {
-    public static List<Block>? Render(string content)
+    public static List<IBlock>? Render(string content)
     {
         var inputStream = new AntlrInputStream(content); 
         var lexer = new JinjaLexer(inputStream);

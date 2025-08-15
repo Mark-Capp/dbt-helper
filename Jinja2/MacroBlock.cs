@@ -2,7 +2,7 @@ namespace Jinja2;
 
 public class MacroBlock(string name,
     Dictionary<string, ExpressionBlock?> args,
-    Block[] body) : Block, IRender
+    IBlock[] body) : Block, IRender
 {
     public Dictionary<string, ExpressionBlock?> ArgNames { get; } = args;
     

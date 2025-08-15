@@ -5,8 +5,6 @@ public class TextBlock(string content)
 {
     public void Render(Context context)
     {
-        
         RenderableBlock.Render(context, this, content);
-
     }
 }
