@@ -1,4 +1,5 @@
-﻿using DbtHelper.Jinja2;
+﻿
+using Jinja2;
 
 namespace DbtHelper.Jinja.Tests;
 

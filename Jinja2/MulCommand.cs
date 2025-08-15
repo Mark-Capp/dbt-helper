@@ -7,7 +7,9 @@ public class MulCommand(ExpressionBlock left, ExpressionBlock right) : ICommand
         var tuple = (left, right);
         return tuple switch
         {
-            (IntBlock leftInt, IntBlock rightInt) => leftInt.Mul(context, rightInt),
+            (IdBlock l, { } r) => l.Mul(context, r),
+            ({} l, IdBlock r) => r.Mul(context, l),
+            (IntBlock l, { } r) => l.Mul(context, r),
             (_, _) => 0
         };
     }

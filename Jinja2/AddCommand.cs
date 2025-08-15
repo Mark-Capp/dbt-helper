@@ -7,8 +7,9 @@ public class AddCommand(ExpressionBlock left, ExpressionBlock right) : ICommand
         var tuple = (left, right);
         return tuple switch
         {
-            (IntBlock l, {} rightInt) => l.Add(context, rightInt),
             (IdBlock l, { } r) => l.Add(context, r),
+            ({} l, IdBlock r) => r.Add(context, l),
+            (IntBlock l, { } r) => l.Add(context, r),
             (StringBlock l, {} r ) => l.Add(context, r),
             (_, _) => 0
         };

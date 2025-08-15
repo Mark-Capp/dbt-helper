@@ -23,6 +23,9 @@ expression_body
     | STRING #eqString
     | functionCall #eqFunctionCall
     | concat+ #eqConcat
+    | ID DOT functionCall #eqObjectFunction
+    | ID DOT ID #eqObjectProperty
+    | (concat+) DOT functionCall #eqConcatFuntion
     ;
     
 concat

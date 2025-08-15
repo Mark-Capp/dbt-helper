@@ -35,6 +35,7 @@ mode EXPR;
   RPARAN: ')';
   COMMA: ',';
   CONCAT: '~';
+  DOT : '.';
 
 mode STMT;
   CLOSE_STMT : '%}' -> popMode, type(CLOSE_STMT);
@@ -61,6 +62,7 @@ mode STMT;
   STMT_RPARAN: RPARAN -> type(RPARAN);
   STMT_COMMA: COMMA -> type(COMMA);
   STMT_CONCAT: CONCAT -> type(CONCAT);
+  STMT_DOT: DOT -> type(DOT);
 
 mode COMMENT;
   CLOSE_COMMENT : '#}' -> popMode, type(CLOSE_COMMENT);

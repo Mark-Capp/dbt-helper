@@ -120,6 +120,28 @@ public partial class JinjaParserBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// <return>The visitor result.</return>
 	public virtual Result VisitEqID([NotNull] JinjaParser.EqIDContext context) { return VisitChildren(context); }
 	/// <summary>
+	/// Visit a parse tree produced by the <c>eqObjectProperty</c>
+	/// labeled alternative in <see cref="JinjaParser.expression_body"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitEqObjectProperty([NotNull] JinjaParser.EqObjectPropertyContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>eqConcatFuntion</c>
+	/// labeled alternative in <see cref="JinjaParser.expression_body"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitEqConcatFuntion([NotNull] JinjaParser.EqConcatFuntionContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by the <c>eqConcat</c>
 	/// labeled alternative in <see cref="JinjaParser.expression_body"/>.
 	/// <para>
@@ -163,6 +185,17 @@ public partial class JinjaParserBaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitEqString([NotNull] JinjaParser.EqStringContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>eqObjectFunction</c>
+	/// labeled alternative in <see cref="JinjaParser.expression_body"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitEqObjectFunction([NotNull] JinjaParser.EqObjectFunctionContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>eqInnerConcat</c>
 	/// labeled alternative in <see cref="JinjaParser.concat"/>.

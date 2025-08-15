@@ -76,6 +76,17 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
             body.ToArray());
     }
 
+    public override Block VisitEqConcatFuntion(JinjaParser.EqConcatFuntionContext context)
+    {
+        var concat = context.concat()
+            .Select(block => Visit(block) as ExpressionBlock)
+            .Select(expression => expression!)
+            .ToList();
+
+        var concatBlock = new ConcatBlock(concat);
+        var function = context.functionCall().ID().GetText();
+        return new FunctionCallBlock(concatBlock, [function]);
+    }
 
     public override Block VisitFunctionCall(JinjaParser.FunctionCallContext context)
     {
@@ -83,13 +94,10 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<Block>
         var args = context.argList().expression_body()
             .Select(block => Visit(block) as ExpressionBlock)
             .Select(expression => expression!).ToList();
-        return new FunctionCallBlock(name, args);
+        return new MacroCallBlock(name, args);
     }
 
-    public override Block VisitEqInnerConcat(JinjaParser.EqInnerConcatContext context)
-    {
-        return Visit(context.concat());
-    }
+    public override Block VisitEqInnerConcat(JinjaParser.EqInnerConcatContext context) => Visit(context.concat());
 
     public override Block VisitEqOuterConcat(JinjaParser.EqOuterConcatContext context)
     {

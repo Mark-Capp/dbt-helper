@@ -1,32 +1,19 @@
 namespace Jinja2;
 
-public class FunctionCallBlock(
-    string name,
-    List<ExpressionBlock> args): Block, IRender
+public class FunctionCallBlock(ExpressionBlock subject, List<string> functions)
+    : ExpressionBlock , IRender
 {
-    
-    public void Render(Context context)
+    public override object? GetValue(Context context)
     {
-        if (!context.Macros.TryGetValue(name, out var macro))
-        {
-            return;
-        }
+        if (subject is not IPerformFunction performer) 
+            return subject.GetValue(context);
         
-        var variables = new Dictionary<string, ExpressionBlock>();
-        for (var index = 0; index < macro.ArgNames.Keys.Count; index++)
+        foreach (var function in functions)
         {
-            var key = macro.ArgNames.Keys.ElementAt(index);
-            variables.Add(key, index >= args.Count ? macro.ArgNames[key] : args[index]);
+            performer.Perform(function, context);
         }
-
-        var macroCotext = new Context()
-        {
-            Macros = context.Macros,
-            Variables = variables,
-            Content = string.Empty
-        };
-        
-        macro.Execute(macroCotext);
-        context.Content += macroCotext.Content;
+        return subject.GetValue(context);
     }
+
+    public void Render(Context context) => context.Content += GetValue(context);
 }

@@ -7,7 +7,8 @@ public class DivCommand(ExpressionBlock left, ExpressionBlock right) : ICommand
         var tuple = (left, right);
         return tuple switch
         {
-            (IntBlock leftInt, IntBlock rightInt) => leftInt.Div(context, rightInt),
+            (IdBlock l, { } r) => l.Div(context, r),
+            (IntBlock l, { } r) => l.Div(context, r),
             (_, _) => 0
         };
     }
