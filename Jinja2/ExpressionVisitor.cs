@@ -1,3 +1,5 @@
+using System.Net.Mime;
+
 namespace Jinja2;
 
 internal class ExpressionVisitor : JinjaParserBaseVisitor<IBlock>
@@ -73,11 +75,32 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<IBlock>
 
     public override IBlock VisitEqIfBlock(JinjaParser.EqIfBlockContext context)
     {
+        var hasElse  = context.ELSE() != null;
         var condition = Visit(context.boolean_expression(0)) as ExpressionBlock;
         
         var jinjaVisitor = new JinjaVisitor();
         var body = jinjaVisitor.Visit(context.if_template(0));
-        return new IfBlock(condition, body.ToArray(), [], []);
+
+
+        var conditions = context.boolean_expression().Skip(1).ToArray();
+        var bodies = context.if_template().Skip(1).ToArray();
+        var elseBody = new List<IBlock>();
+        
+        if (hasElse)
+        {
+            elseBody = jinjaVisitor.Visit(bodies.Last());
+            bodies = bodies[..^1];
+        }
+        
+        List<(ExpressionBlock condition, IBlock[] body)> elifs = [];
+        for (var i = 0; i < conditions.Length; i++)
+        {
+            var elifCondition = Visit(conditions[i]) as ExpressionBlock;
+            var elifBody = jinjaVisitor.Visit(bodies[i]).ToArray();
+            elifs.Add((elifCondition, elifBody));;
+        }
+        
+        return new IfBlock(condition, body.ToArray(), elifs, elseBody.ToArray());
     }
 
     public override IBlock VisitEqMacro(JinjaParser.EqMacroContext context)
