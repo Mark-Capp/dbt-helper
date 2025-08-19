@@ -41,6 +41,8 @@ mode EXPR;
   COMMA: ',';
   CONCAT: '~';
   DOT : '.';
+  LSBRACKET: '[';
+  RSBRACKET: ']';
 
 mode STMT;
   CLOSE_STMT : '%}' -> popMode, type(CLOSE_STMT);
@@ -52,6 +54,8 @@ mode STMT;
   ELSE       : 'else' ;
   ENDIF      : 'endif' ;
   FOR        : 'for' ;
+  IN          : 'in';
+  ENDFOR     : 'endfor';
   END        : 'end' ;
   EQ         : '==' ;
   MACRO      : 'macro';
@@ -79,6 +83,8 @@ mode STMT;
   STMT_COMMA: COMMA -> type(COMMA);
   STMT_CONCAT: CONCAT -> type(CONCAT);
   STMT_DOT: DOT -> type(DOT);
+  STMT_LSBRACKET: LSBRACKET -> type(LSBRACKET);
+  STMT_CSBRACKET: RSBRACKET -> type(RSBRACKET);
 
 mode COMMENT;
   CLOSE_COMMENT : '#}' -> popMode, type(CLOSE_COMMENT);

@@ -2,15 +2,15 @@
 options { tokenVocab=JinjaLexer; }
 
 template 
-    : ( text | expression | statement | macro | if_stmt | comment)* EOF
+    : ( text | expression | statement | macro | if_stmt | for_stmt | comment)* EOF
     ;
     
 macro_template 
-    : ( text | expression | statement | if_stmt | comment)*
+    : ( text | expression | statement | if_stmt | for_stmt | comment)*
     ;
     
 if_template 
-    : ( text | expression | statement  | comment)*
+    : ( text | expression | statement | for_stmt | comment)*
     ;
     
 expression
@@ -39,7 +39,16 @@ concat
 concat_expression_body
     : ID
     | STRING
+    | int
+    ;
+    
+collection_expression 
+    : LSBRACKET ((collection_item)? (COMMA collection_item)*) RSBRACKET;
+    
+collection_item 
+    : ID
     | INT
+    | STRING
     ;
     
 statement
@@ -48,6 +57,7 @@ statement
     
 statement_body
     : SET ID EQUALS expression_body #eqAssign
+    | SET ID EQUALS collection_expression #eqAssignCollection
     ;
     
 if_stmt
@@ -56,6 +66,21 @@ if_stmt
       (OPEN_STMT (MINUS)? ELIF boolean_expression (MINUS)? CLOSE_STMT if_template)*
       (OPEN_STMT (MINUS)? ELSE (MINUS)? CLOSE_STMT if_template)?
       OPEN_STMT (MINUS)? ENDIF (MINUS)? CLOSE_STMT #eqIfBlock
+    ;
+    
+for_stmt
+    : OPEN_STMT (MINUS)? FOR ID IN for_expression_body (MINUS)? CLOSE_STMT
+        for_template
+      OPEN_STMT (MINUS)? ENDFOR (MINUS)? CLOSE_STMT #eqForBlock
+    ;
+    
+for_expression_body
+    : ID
+    | collection_expression
+    ;
+    
+for_template
+    : ( text | expression | statement | if_stmt | comment)*
     ;
     
 macro
@@ -88,3 +113,6 @@ comment
     : OPEN_COMMENT (COMMENT_TEXT)* CLOSE_COMMENT;
     
 text : TEXT;
+id_ : ID;
+int : INT;
+string: STRING;

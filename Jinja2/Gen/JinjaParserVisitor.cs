@@ -153,6 +153,18 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitConcat_expression_body([NotNull] JinjaParser.Concat_expression_bodyContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.collection_expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCollection_expression([NotNull] JinjaParser.Collection_expressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.collection_item"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCollection_item([NotNull] JinjaParser.Collection_itemContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="JinjaParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -166,12 +178,38 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEqAssign([NotNull] JinjaParser.EqAssignContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>eqAssignCollection</c>
+	/// labeled alternative in <see cref="JinjaParser.statement_body"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqAssignCollection([NotNull] JinjaParser.EqAssignCollectionContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>eqIfBlock</c>
 	/// labeled alternative in <see cref="JinjaParser.if_stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitEqIfBlock([NotNull] JinjaParser.EqIfBlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>eqForBlock</c>
+	/// labeled alternative in <see cref="JinjaParser.for_stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqForBlock([NotNull] JinjaParser.EqForBlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.for_expression_body"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFor_expression_body([NotNull] JinjaParser.For_expression_bodyContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.for_template"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFor_template([NotNull] JinjaParser.For_templateContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>eqMacro</c>
 	/// labeled alternative in <see cref="JinjaParser.macro"/>.
@@ -236,4 +274,22 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitText([NotNull] JinjaParser.TextContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.id_"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitId_([NotNull] JinjaParser.Id_Context context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.int"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitInt([NotNull] JinjaParser.IntContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.string"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitString([NotNull] JinjaParser.StringContext context);
 }

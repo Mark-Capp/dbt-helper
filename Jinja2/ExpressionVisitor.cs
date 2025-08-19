@@ -1,5 +1,3 @@
-using System.Net.Mime;
-
 namespace Jinja2;
 
 internal class ExpressionVisitor : JinjaParserBaseVisitor<IBlock>
@@ -24,6 +22,14 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<IBlock>
     {
         var name = context.ID().GetText();
         var expression = Visit(context.expression_body()) as ExpressionBlock;
+        return new SetBlock(name, expression!);
+    }
+
+    public override IBlock VisitEqAssignCollection(JinjaParser.EqAssignCollectionContext context)
+    {
+        
+        var name = context.ID().GetText();
+        var expression = Visit(context.collection_expression()) as ExpressionBlock;
         return new SetBlock(name, expression!);
     }
 
@@ -139,6 +145,19 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<IBlock>
         return block;
     }
 
+    public override IBlock VisitEqForBlock(JinjaParser.EqForBlockContext context)
+    {
+        // for ID in expression ... endfor
+        var loopVar = context.ID().GetText();
+        var iterable = Visit(context.for_expression_body()) as ExpressionBlock;
+        var jinjaVisitor = new JinjaVisitor();
+        var body = jinjaVisitor.Visit(context.for_template());
+        return new ForBlock(loopVar, iterable!, body.ToArray())
+        {
+            ShouldStripNewLines = context.MINUS() != null
+        };
+    }
+
     public override IBlock VisitEqConcatFuntion(JinjaParser.EqConcatFuntionContext context)
     {
         var concat = context.concat()
@@ -179,10 +198,39 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<IBlock>
             return new IdBlock(context.ID().GetText());
         if(context.STRING() != null)
             return new StringBlock(context.STRING().GetText());
-        if(context.INT() != null)
-            return new IntBlock(int.Parse(context.INT().GetText()));
+        if (context.@int() != null)
+            return Visit(context.@int());
 
         return null;
     }
-    
+
+    public override IBlock VisitCollection_expression(JinjaParser.Collection_expressionContext context)
+    {
+        var items = context.collection_item()?
+            .Select(item => Visit(item) as ExpressionBlock)
+            .Select(block => block!)
+            .ToList();
+        return new CollectionBlock(items ?? []);
+    }
+
+    public override IBlock VisitCollection_item(JinjaParser.Collection_itemContext context)
+    {
+        if (context.ID() != null)
+            return new IdBlock(context.ID().GetText());
+        if(context.STRING() != null)
+            return new StringBlock(context.STRING().GetText());
+        if(context.INT() != null)
+            return new IntBlock(int.Parse(context.INT().GetText()));
+        return null;
+    }
+
+    public override IBlock VisitFor_expression_body(JinjaParser.For_expression_bodyContext context)
+    {
+        return context.ID() != null 
+            ? new IdBlock(context.ID().GetText()) 
+            : Visit(context.collection_expression());
+    }
+
+    public override IBlock VisitInt(JinjaParser.IntContext context) 
+        => new IntBlock(int.Parse(context.INT().GetText()));
 }
