@@ -52,6 +52,34 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<IBlock>
     public override IBlock VisitEqString(JinjaParser.EqStringContext context) 
         => new StringBlock(context.STRING().GetText());
 
+    public override IBlock VisitEqBoolParens(JinjaParser.EqBoolParensContext context) 
+        => Visit(context.boolean_expression());
+
+    public override IBlock VisitEqBoolCompare(JinjaParser.EqBoolCompareContext context)
+    {
+        var @operator = context.op.Type switch
+        {
+            JinjaLexer.GT => Operator.GreaterThan,
+            JinjaLexer.LT => Operator.LessThan,
+            JinjaLexer.GE => Operator.GreaterThanOrEqual,
+            JinjaLexer.LE => Operator.LessThanOrEqual,
+            JinjaLexer.NEQ => Operator.NotEqual,
+            _ => Operator.Equal
+        };
+        var left = Visit(context.left) as ExpressionBlock;
+        var right = Visit(context.right) as ExpressionBlock;
+        return new ComparisonBlock(left, right, @operator);
+    }
+
+    public override IBlock VisitEqIfBlock(JinjaParser.EqIfBlockContext context)
+    {
+        var condition = Visit(context.boolean_expression(0)) as ExpressionBlock;
+        
+        var jinjaVisitor = new JinjaVisitor();
+        var body = jinjaVisitor.Visit(context.if_template(0));
+        return new IfBlock(condition, body.ToArray(), [], []);
+    }
+
     public override IBlock VisitEqMacro(JinjaParser.EqMacroContext context)
     {
         var name = context.ID();

@@ -29,6 +29,12 @@ mode EXPR;
   MUL : '*';
   DIV : '/';
   EQUALS : '=';
+  // Comparison operators (also available in STMT via remap)
+  GE : '>=';
+  LE : '<=';
+  GT : '>';
+  LT : '<';
+  NEQ: '!=';
   // …more tokens as needed
   LPARAN: '(';
   RPARAN: ')';
@@ -42,6 +48,9 @@ mode STMT;
   
   SET       : 'set';
   IF         : 'if' ;
+  ELIF       : 'elif' ;
+  ELSE       : 'else' ;
+  ENDIF      : 'endif' ;
   FOR        : 'for' ;
   END        : 'end' ;
   EQ         : '==' ;
@@ -57,6 +66,13 @@ mode STMT;
   STMT_MUL: MUL -> type(MUL);
   STMT_DIV: DIV -> type(DIV);
   STMT_EQUALS: EQUALS -> type(EQUALS);
+  
+  // remap comparison operators into STMT mode
+  STMT_GE: GE -> type(GE);
+  STMT_LE: LE -> type(LE);
+  STMT_GT: GT -> type(GT);
+  STMT_LT: LT -> type(LT);
+  STMT_NEQ: NEQ -> type(NEQ);
   
   STMT_LPARAN: LPARAN -> type(LPARAN);
   STMT_RPARAN: RPARAN -> type(RPARAN);

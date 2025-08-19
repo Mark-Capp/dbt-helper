@@ -44,6 +44,12 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitMacro_template([NotNull] JinjaParser.Macro_templateContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="JinjaParser.if_template"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIf_template([NotNull] JinjaParser.If_templateContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="JinjaParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -153,19 +159,19 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] JinjaParser.StatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>eqIF</c>
-	/// labeled alternative in <see cref="JinjaParser.statement_body"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitEqIF([NotNull] JinjaParser.EqIFContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>eqAssign</c>
 	/// labeled alternative in <see cref="JinjaParser.statement_body"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitEqAssign([NotNull] JinjaParser.EqAssignContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>eqIfBlock</c>
+	/// labeled alternative in <see cref="JinjaParser.if_stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqIfBlock([NotNull] JinjaParser.EqIfBlockContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>eqMacro</c>
 	/// labeled alternative in <see cref="JinjaParser.macro"/>.
@@ -186,11 +192,26 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitParam([NotNull] JinjaParser.ParamContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="JinjaParser.boolean_expression"/>.
+	/// Visit a parse tree produced by the <c>eqBoolParens</c>
+	/// labeled alternative in <see cref="JinjaParser.boolean_expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitBoolean_expression([NotNull] JinjaParser.Boolean_expressionContext context);
+	Result VisitEqBoolParens([NotNull] JinjaParser.EqBoolParensContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>eqBoolCompare</c>
+	/// labeled alternative in <see cref="JinjaParser.boolean_expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqBoolCompare([NotNull] JinjaParser.EqBoolCompareContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>eqBoolExpr</c>
+	/// labeled alternative in <see cref="JinjaParser.boolean_expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqBoolExpr([NotNull] JinjaParser.EqBoolExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="JinjaParser.functionCall"/>.
 	/// </summary>

@@ -37,34 +37,37 @@ public partial class JinjaParser : Parser {
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
 		TEXT=1, OPEN_EXPR=2, OPEN_STMT=3, OPEN_COMMENT=4, WS_EXPR=5, ID=6, INT=7, 
-		ESC=8, STRING=9, PLUS=10, MINUS=11, MUL=12, DIV=13, EQUALS=14, LPARAN=15, 
-		RPARAN=16, COMMA=17, CONCAT=18, DOT=19, WS_STMT=20, SET=21, IF=22, FOR=23, 
-		END=24, EQ=25, MACRO=26, END_MACRO=27, COMMENT_TEXT=28, CLOSE_EXPR=29, 
-		CLOSE_STMT=30, CLOSE_COMMENT=31;
+		ESC=8, STRING=9, PLUS=10, MINUS=11, MUL=12, DIV=13, EQUALS=14, GE=15, 
+		LE=16, GT=17, LT=18, NEQ=19, LPARAN=20, RPARAN=21, COMMA=22, CONCAT=23, 
+		DOT=24, WS_STMT=25, SET=26, IF=27, ELIF=28, ELSE=29, ENDIF=30, FOR=31, 
+		END=32, EQ=33, MACRO=34, END_MACRO=35, COMMENT_TEXT=36, CLOSE_EXPR=37, 
+		CLOSE_STMT=38, CLOSE_COMMENT=39;
 	public const int
-		RULE_template = 0, RULE_macro_template = 1, RULE_expression = 2, RULE_expression_body = 3, 
-		RULE_concat = 4, RULE_concat_expression_body = 5, RULE_statement = 6, 
-		RULE_statement_body = 7, RULE_macro = 8, RULE_params = 9, RULE_param = 10, 
-		RULE_boolean_expression = 11, RULE_functionCall = 12, RULE_argList = 13, 
-		RULE_comment = 14, RULE_text = 15;
+		RULE_template = 0, RULE_macro_template = 1, RULE_if_template = 2, RULE_expression = 3, 
+		RULE_expression_body = 4, RULE_concat = 5, RULE_concat_expression_body = 6, 
+		RULE_statement = 7, RULE_statement_body = 8, RULE_if_stmt = 9, RULE_macro = 10, 
+		RULE_params = 11, RULE_param = 12, RULE_boolean_expression = 13, RULE_functionCall = 14, 
+		RULE_argList = 15, RULE_comment = 16, RULE_text = 17;
 	public static readonly string[] ruleNames = {
-		"template", "macro_template", "expression", "expression_body", "concat", 
-		"concat_expression_body", "statement", "statement_body", "macro", "params", 
-		"param", "boolean_expression", "functionCall", "argList", "comment", "text"
+		"template", "macro_template", "if_template", "expression", "expression_body", 
+		"concat", "concat_expression_body", "statement", "statement_body", "if_stmt", 
+		"macro", "params", "param", "boolean_expression", "functionCall", "argList", 
+		"comment", "text"
 	};
 
 	private static readonly string[] _LiteralNames = {
 		null, null, "'{{'", "'{%'", "'{#'", null, null, null, null, null, "'+'", 
-		"'-'", "'*'", "'/'", "'='", "'('", "')'", "','", "'~'", "'.'", null, "'set'", 
-		"'if'", "'for'", "'end'", "'=='", "'macro'", "'endmacro'", null, "'}}'", 
+		"'-'", "'*'", "'/'", "'='", "'>='", "'<='", "'>'", "'<'", "'!='", "'('", 
+		"')'", "','", "'~'", "'.'", null, "'set'", "'if'", "'elif'", "'else'", 
+		"'endif'", "'for'", "'end'", "'=='", "'macro'", "'endmacro'", null, "'}}'", 
 		"'%}'", "'#}'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "TEXT", "OPEN_EXPR", "OPEN_STMT", "OPEN_COMMENT", "WS_EXPR", "ID", 
-		"INT", "ESC", "STRING", "PLUS", "MINUS", "MUL", "DIV", "EQUALS", "LPARAN", 
-		"RPARAN", "COMMA", "CONCAT", "DOT", "WS_STMT", "SET", "IF", "FOR", "END", 
-		"EQ", "MACRO", "END_MACRO", "COMMENT_TEXT", "CLOSE_EXPR", "CLOSE_STMT", 
-		"CLOSE_COMMENT"
+		"INT", "ESC", "STRING", "PLUS", "MINUS", "MUL", "DIV", "EQUALS", "GE", 
+		"LE", "GT", "LT", "NEQ", "LPARAN", "RPARAN", "COMMA", "CONCAT", "DOT", 
+		"WS_STMT", "SET", "IF", "ELIF", "ELSE", "ENDIF", "FOR", "END", "EQ", "MACRO", 
+		"END_MACRO", "COMMENT_TEXT", "CLOSE_EXPR", "CLOSE_STMT", "CLOSE_COMMENT"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -124,6 +127,12 @@ public partial class JinjaParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public MacroContext macro(int i) {
 			return GetRuleContext<MacroContext>(i);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public If_stmtContext[] if_stmt() {
+			return GetRuleContexts<If_stmtContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public If_stmtContext if_stmt(int i) {
+			return GetRuleContext<If_stmtContext>(i);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public CommentContext[] comment() {
 			return GetRuleContexts<CommentContext>();
 		}
@@ -151,51 +160,57 @@ public partial class JinjaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 39;
+			State = 44;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 30L) != 0)) {
 				{
-				State = 37;
+				State = 42;
 				ErrorHandler.Sync(this);
 				switch ( Interpreter.AdaptivePredict(TokenStream,0,Context) ) {
 				case 1:
 					{
-					State = 32;
+					State = 36;
 					text();
 					}
 					break;
 				case 2:
 					{
-					State = 33;
+					State = 37;
 					expression();
 					}
 					break;
 				case 3:
 					{
-					State = 34;
+					State = 38;
 					statement();
 					}
 					break;
 				case 4:
 					{
-					State = 35;
+					State = 39;
 					macro();
 					}
 					break;
 				case 5:
 					{
-					State = 36;
+					State = 40;
+					if_stmt();
+					}
+					break;
+				case 6:
+					{
+					State = 41;
 					comment();
 					}
 					break;
 				}
 				}
-				State = 41;
+				State = 46;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 42;
+			State = 47;
 			Match(Eof);
 			}
 		}
@@ -229,6 +244,12 @@ public partial class JinjaParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public StatementContext statement(int i) {
 			return GetRuleContext<StatementContext>(i);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public If_stmtContext[] if_stmt() {
+			return GetRuleContexts<If_stmtContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public If_stmtContext if_stmt(int i) {
+			return GetRuleContext<If_stmtContext>(i);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public CommentContext[] comment() {
 			return GetRuleContexts<CommentContext>();
 		}
@@ -256,36 +277,141 @@ public partial class JinjaParser : Parser {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 50;
+			State = 56;
 			ErrorHandler.Sync(this);
 			_alt = Interpreter.AdaptivePredict(TokenStream,3,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
-					State = 48;
+					State = 54;
+					ErrorHandler.Sync(this);
+					switch ( Interpreter.AdaptivePredict(TokenStream,2,Context) ) {
+					case 1:
+						{
+						State = 49;
+						text();
+						}
+						break;
+					case 2:
+						{
+						State = 50;
+						expression();
+						}
+						break;
+					case 3:
+						{
+						State = 51;
+						statement();
+						}
+						break;
+					case 4:
+						{
+						State = 52;
+						if_stmt();
+						}
+						break;
+					case 5:
+						{
+						State = 53;
+						comment();
+						}
+						break;
+					}
+					} 
+				}
+				State = 58;
+				ErrorHandler.Sync(this);
+				_alt = Interpreter.AdaptivePredict(TokenStream,3,Context);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class If_templateContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public TextContext[] text() {
+			return GetRuleContexts<TextContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public TextContext text(int i) {
+			return GetRuleContext<TextContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
+			return GetRuleContexts<ExpressionContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
+			return GetRuleContext<ExpressionContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public StatementContext[] statement() {
+			return GetRuleContexts<StatementContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public StatementContext statement(int i) {
+			return GetRuleContext<StatementContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public CommentContext[] comment() {
+			return GetRuleContexts<CommentContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public CommentContext comment(int i) {
+			return GetRuleContext<CommentContext>(i);
+		}
+		public If_templateContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_if_template; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJinjaParserVisitor<TResult> typedVisitor = visitor as IJinjaParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitIf_template(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public If_templateContext if_template() {
+		If_templateContext _localctx = new If_templateContext(Context, State);
+		EnterRule(_localctx, 4, RULE_if_template);
+		try {
+			int _alt;
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 65;
+			ErrorHandler.Sync(this);
+			_alt = Interpreter.AdaptivePredict(TokenStream,5,Context);
+			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					State = 63;
 					ErrorHandler.Sync(this);
 					switch (TokenStream.LA(1)) {
 					case TEXT:
 						{
-						State = 44;
+						State = 59;
 						text();
 						}
 						break;
 					case OPEN_EXPR:
 						{
-						State = 45;
+						State = 60;
 						expression();
 						}
 						break;
 					case OPEN_STMT:
 						{
-						State = 46;
+						State = 61;
 						statement();
 						}
 						break;
 					case OPEN_COMMENT:
 						{
-						State = 47;
+						State = 62;
 						comment();
 						}
 						break;
@@ -294,9 +420,9 @@ public partial class JinjaParser : Parser {
 					}
 					} 
 				}
-				State = 52;
+				State = 67;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,3,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,5,Context);
 			}
 			}
 		}
@@ -337,36 +463,36 @@ public partial class JinjaParser : Parser {
 	[RuleVersion(0)]
 	public ExpressionContext expression() {
 		ExpressionContext _localctx = new ExpressionContext(Context, State);
-		EnterRule(_localctx, 4, RULE_expression);
+		EnterRule(_localctx, 6, RULE_expression);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 53;
+			State = 68;
 			Match(OPEN_EXPR);
-			State = 55;
+			State = 70;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==MINUS) {
 				{
-				State = 54;
+				State = 69;
 				Match(MINUS);
 				}
 			}
 
-			State = 57;
+			State = 72;
 			expression_body(0);
-			State = 59;
+			State = 74;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==MINUS) {
 				{
-				State = 58;
+				State = 73;
 				Match(MINUS);
 				}
 			}
 
-			State = 61;
+			State = 76;
 			Match(CLOSE_EXPR);
 			}
 		}
@@ -562,27 +688,27 @@ public partial class JinjaParser : Parser {
 		int _parentState = State;
 		Expression_bodyContext _localctx = new Expression_bodyContext(Context, _parentState);
 		Expression_bodyContext _prevctx = _localctx;
-		int _startState = 6;
-		EnterRecursionRule(_localctx, 6, RULE_expression_body, _p);
+		int _startState = 8;
+		EnterRecursionRule(_localctx, 8, RULE_expression_body, _p);
 		int _la;
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 91;
+			State = 106;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,8,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,10,Context) ) {
 			case 1:
 				{
 				_localctx = new EqParanContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
 
-				State = 64;
+				State = 79;
 				Match(LPARAN);
-				State = 65;
+				State = 80;
 				expression_body(0);
-				State = 66;
+				State = 81;
 				Match(RPARAN);
 				}
 				break;
@@ -591,7 +717,7 @@ public partial class JinjaParser : Parser {
 				_localctx = new EqIDContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 68;
+				State = 83;
 				Match(ID);
 				}
 				break;
@@ -600,7 +726,7 @@ public partial class JinjaParser : Parser {
 				_localctx = new EqINTContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 69;
+				State = 84;
 				Match(INT);
 				}
 				break;
@@ -609,7 +735,7 @@ public partial class JinjaParser : Parser {
 				_localctx = new EqStringContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 70;
+				State = 85;
 				Match(STRING);
 				}
 				break;
@@ -618,7 +744,7 @@ public partial class JinjaParser : Parser {
 				_localctx = new EqFunctionCallContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 71;
+				State = 86;
 				functionCall();
 				}
 				break;
@@ -627,7 +753,7 @@ public partial class JinjaParser : Parser {
 				_localctx = new EqConcatContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 73;
+				State = 88;
 				ErrorHandler.Sync(this);
 				_alt = 1;
 				do {
@@ -635,7 +761,7 @@ public partial class JinjaParser : Parser {
 					case 1:
 						{
 						{
-						State = 72;
+						State = 87;
 						concat();
 						}
 						}
@@ -643,9 +769,9 @@ public partial class JinjaParser : Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					State = 75;
+					State = 90;
 					ErrorHandler.Sync(this);
-					_alt = Interpreter.AdaptivePredict(TokenStream,6,Context);
+					_alt = Interpreter.AdaptivePredict(TokenStream,8,Context);
 				} while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER );
 				}
 				break;
@@ -654,11 +780,11 @@ public partial class JinjaParser : Parser {
 				_localctx = new EqObjectFunctionContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 77;
+				State = 92;
 				Match(ID);
-				State = 78;
+				State = 93;
 				Match(DOT);
-				State = 79;
+				State = 94;
 				functionCall();
 				}
 				break;
@@ -667,11 +793,11 @@ public partial class JinjaParser : Parser {
 				_localctx = new EqObjectPropertyContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 80;
+				State = 95;
 				Match(ID);
-				State = 81;
+				State = 96;
 				Match(DOT);
-				State = 82;
+				State = 97;
 				Match(ID);
 				}
 				break;
@@ -681,49 +807,49 @@ public partial class JinjaParser : Parser {
 				Context = _localctx;
 				_prevctx = _localctx;
 				{
-				State = 84;
+				State = 99;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				do {
 					{
 					{
-					State = 83;
+					State = 98;
 					concat();
 					}
 					}
-					State = 86;
+					State = 101;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
-				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 33472L) != 0) );
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 1049280L) != 0) );
 				}
-				State = 88;
+				State = 103;
 				Match(DOT);
-				State = 89;
+				State = 104;
 				functionCall();
 				}
 				break;
 			}
 			Context.Stop = TokenStream.LT(-1);
-			State = 101;
+			State = 116;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,10,Context);
+			_alt = Interpreter.AdaptivePredict(TokenStream,12,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( ParseListeners!=null )
 						TriggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					State = 99;
+					State = 114;
 					ErrorHandler.Sync(this);
-					switch ( Interpreter.AdaptivePredict(TokenStream,9,Context) ) {
+					switch ( Interpreter.AdaptivePredict(TokenStream,11,Context) ) {
 					case 1:
 						{
 						_localctx = new EqAddContext(new Expression_bodyContext(_parentctx, _parentState));
 						((EqAddContext)_localctx).left = _prevctx;
 						PushNewRecursionContext(_localctx, _startState, RULE_expression_body);
-						State = 93;
+						State = 108;
 						if (!(Precpred(Context, 10))) throw new FailedPredicateException(this, "Precpred(Context, 10)");
-						State = 94;
+						State = 109;
 						((EqAddContext)_localctx).@operator = TokenStream.LT(1);
 						_la = TokenStream.LA(1);
 						if ( !(_la==PLUS || _la==MINUS) ) {
@@ -733,7 +859,7 @@ public partial class JinjaParser : Parser {
 							ErrorHandler.ReportMatch(this);
 						    Consume();
 						}
-						State = 95;
+						State = 110;
 						((EqAddContext)_localctx).right = expression_body(11);
 						}
 						break;
@@ -742,9 +868,9 @@ public partial class JinjaParser : Parser {
 						_localctx = new EqMulContext(new Expression_bodyContext(_parentctx, _parentState));
 						((EqMulContext)_localctx).left = _prevctx;
 						PushNewRecursionContext(_localctx, _startState, RULE_expression_body);
-						State = 96;
+						State = 111;
 						if (!(Precpred(Context, 9))) throw new FailedPredicateException(this, "Precpred(Context, 9)");
-						State = 97;
+						State = 112;
 						((EqMulContext)_localctx).@operator = TokenStream.LT(1);
 						_la = TokenStream.LA(1);
 						if ( !(_la==MUL || _la==DIV) ) {
@@ -754,16 +880,16 @@ public partial class JinjaParser : Parser {
 							ErrorHandler.ReportMatch(this);
 						    Consume();
 						}
-						State = 98;
+						State = 113;
 						((EqMulContext)_localctx).right = expression_body(10);
 						}
 						break;
 					}
 					} 
 				}
-				State = 103;
+				State = 118;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,10,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,12,Context);
 			}
 			}
 		}
@@ -829,21 +955,21 @@ public partial class JinjaParser : Parser {
 	[RuleVersion(0)]
 	public ConcatContext concat() {
 		ConcatContext _localctx = new ConcatContext(Context, State);
-		EnterRule(_localctx, 8, RULE_concat);
+		EnterRule(_localctx, 10, RULE_concat);
 		try {
 			int _alt;
-			State = 115;
+			State = 130;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case LPARAN:
 				_localctx = new EqInnerConcatContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 104;
+				State = 119;
 				Match(LPARAN);
-				State = 105;
+				State = 120;
 				concat();
-				State = 106;
+				State = 121;
 				Match(RPARAN);
 				}
 				break;
@@ -853,9 +979,9 @@ public partial class JinjaParser : Parser {
 				_localctx = new EqOuterConcatContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 108;
+				State = 123;
 				((EqOuterConcatContext)_localctx).left = concat_expression_body();
-				State = 111;
+				State = 126;
 				ErrorHandler.Sync(this);
 				_alt = 1;
 				do {
@@ -863,9 +989,9 @@ public partial class JinjaParser : Parser {
 					case 1:
 						{
 						{
-						State = 109;
+						State = 124;
 						Match(CONCAT);
-						State = 110;
+						State = 125;
 						((EqOuterConcatContext)_localctx).right = concat_expression_body();
 						}
 						}
@@ -873,9 +999,9 @@ public partial class JinjaParser : Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					State = 113;
+					State = 128;
 					ErrorHandler.Sync(this);
-					_alt = Interpreter.AdaptivePredict(TokenStream,11,Context);
+					_alt = Interpreter.AdaptivePredict(TokenStream,13,Context);
 				} while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER );
 				}
 				break;
@@ -914,12 +1040,12 @@ public partial class JinjaParser : Parser {
 	[RuleVersion(0)]
 	public Concat_expression_bodyContext concat_expression_body() {
 		Concat_expression_bodyContext _localctx = new Concat_expression_bodyContext(Context, State);
-		EnterRule(_localctx, 10, RULE_concat_expression_body);
+		EnterRule(_localctx, 12, RULE_concat_expression_body);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 117;
+			State = 132;
 			_la = TokenStream.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 704L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -967,36 +1093,36 @@ public partial class JinjaParser : Parser {
 	[RuleVersion(0)]
 	public StatementContext statement() {
 		StatementContext _localctx = new StatementContext(Context, State);
-		EnterRule(_localctx, 12, RULE_statement);
+		EnterRule(_localctx, 14, RULE_statement);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 119;
+			State = 134;
 			Match(OPEN_STMT);
-			State = 121;
+			State = 136;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==MINUS) {
 				{
-				State = 120;
+				State = 135;
 				Match(MINUS);
 				}
 			}
 
-			State = 123;
+			State = 138;
 			statement_body();
-			State = 125;
+			State = 140;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==MINUS) {
 				{
-				State = 124;
+				State = 139;
 				Match(MINUS);
 				}
 			}
 
-			State = 127;
+			State = 142;
 			Match(CLOSE_STMT);
 			}
 		}
@@ -1023,19 +1149,6 @@ public partial class JinjaParser : Parser {
 			base.CopyFrom(context);
 		}
 	}
-	public partial class EqIFContext : Statement_bodyContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IF() { return GetToken(JinjaParser.IF, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public Boolean_expressionContext boolean_expression() {
-			return GetRuleContext<Boolean_expressionContext>(0);
-		}
-		public EqIFContext(Statement_bodyContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJinjaParserVisitor<TResult> typedVisitor = visitor as IJinjaParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitEqIF(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
 	public partial class EqAssignContext : Statement_bodyContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SET() { return GetToken(JinjaParser.SET, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(JinjaParser.ID, 0); }
@@ -1055,37 +1168,231 @@ public partial class JinjaParser : Parser {
 	[RuleVersion(0)]
 	public Statement_bodyContext statement_body() {
 		Statement_bodyContext _localctx = new Statement_bodyContext(Context, State);
-		EnterRule(_localctx, 14, RULE_statement_body);
+		EnterRule(_localctx, 16, RULE_statement_body);
 		try {
-			State = 135;
+			_localctx = new EqAssignContext(_localctx);
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 144;
+			Match(SET);
+			State = 145;
+			Match(ID);
+			State = 146;
+			Match(EQUALS);
+			State = 147;
+			expression_body(0);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class If_stmtContext : ParserRuleContext {
+		public If_stmtContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_if_stmt; } }
+	 
+		public If_stmtContext() { }
+		public virtual void CopyFrom(If_stmtContext context) {
+			base.CopyFrom(context);
+		}
+	}
+	public partial class EqIfBlockContext : If_stmtContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] OPEN_STMT() { return GetTokens(JinjaParser.OPEN_STMT); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OPEN_STMT(int i) {
+			return GetToken(JinjaParser.OPEN_STMT, i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IF() { return GetToken(JinjaParser.IF, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public Boolean_expressionContext[] boolean_expression() {
+			return GetRuleContexts<Boolean_expressionContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public Boolean_expressionContext boolean_expression(int i) {
+			return GetRuleContext<Boolean_expressionContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] CLOSE_STMT() { return GetTokens(JinjaParser.CLOSE_STMT); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CLOSE_STMT(int i) {
+			return GetToken(JinjaParser.CLOSE_STMT, i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public If_templateContext[] if_template() {
+			return GetRuleContexts<If_templateContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public If_templateContext if_template(int i) {
+			return GetRuleContext<If_templateContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ENDIF() { return GetToken(JinjaParser.ENDIF, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] MINUS() { return GetTokens(JinjaParser.MINUS); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MINUS(int i) {
+			return GetToken(JinjaParser.MINUS, i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] ELIF() { return GetTokens(JinjaParser.ELIF); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ELIF(int i) {
+			return GetToken(JinjaParser.ELIF, i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ELSE() { return GetToken(JinjaParser.ELSE, 0); }
+		public EqIfBlockContext(If_stmtContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJinjaParserVisitor<TResult> typedVisitor = visitor as IJinjaParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitEqIfBlock(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public If_stmtContext if_stmt() {
+		If_stmtContext _localctx = new If_stmtContext(Context, State);
+		EnterRule(_localctx, 18, RULE_if_stmt);
+		int _la;
+		try {
+			int _alt;
+			_localctx = new EqIfBlockContext(_localctx);
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 149;
+			Match(OPEN_STMT);
+			State = 151;
 			ErrorHandler.Sync(this);
-			switch (TokenStream.LA(1)) {
-			case IF:
-				_localctx = new EqIFContext(_localctx);
-				EnterOuterAlt(_localctx, 1);
+			_la = TokenStream.LA(1);
+			if (_la==MINUS) {
 				{
-				State = 129;
-				Match(IF);
-				State = 130;
-				boolean_expression();
+				State = 150;
+				Match(MINUS);
+				}
+			}
+
+			State = 153;
+			Match(IF);
+			State = 154;
+			boolean_expression();
+			State = 156;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if (_la==MINUS) {
+				{
+				State = 155;
+				Match(MINUS);
+				}
+			}
+
+			State = 158;
+			Match(CLOSE_STMT);
+			State = 159;
+			if_template();
+			State = 174;
+			ErrorHandler.Sync(this);
+			_alt = Interpreter.AdaptivePredict(TokenStream,21,Context);
+			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					State = 160;
+					Match(OPEN_STMT);
+					State = 162;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+					if (_la==MINUS) {
+						{
+						State = 161;
+						Match(MINUS);
+						}
+					}
+
+					State = 164;
+					Match(ELIF);
+					State = 165;
+					boolean_expression();
+					State = 167;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+					if (_la==MINUS) {
+						{
+						State = 166;
+						Match(MINUS);
+						}
+					}
+
+					State = 169;
+					Match(CLOSE_STMT);
+					State = 170;
+					if_template();
+					}
+					} 
+				}
+				State = 176;
+				ErrorHandler.Sync(this);
+				_alt = Interpreter.AdaptivePredict(TokenStream,21,Context);
+			}
+			State = 187;
+			ErrorHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(TokenStream,24,Context) ) {
+			case 1:
+				{
+				State = 177;
+				Match(OPEN_STMT);
+				State = 179;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==MINUS) {
+					{
+					State = 178;
+					Match(MINUS);
+					}
+				}
+
+				State = 181;
+				Match(ELSE);
+				State = 183;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==MINUS) {
+					{
+					State = 182;
+					Match(MINUS);
+					}
+				}
+
+				State = 185;
+				Match(CLOSE_STMT);
+				State = 186;
+				if_template();
 				}
 				break;
-			case SET:
-				_localctx = new EqAssignContext(_localctx);
-				EnterOuterAlt(_localctx, 2);
+			}
+			State = 189;
+			Match(OPEN_STMT);
+			State = 191;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if (_la==MINUS) {
 				{
-				State = 131;
-				Match(SET);
-				State = 132;
-				Match(ID);
-				State = 133;
-				Match(EQUALS);
-				State = 134;
-				expression_body(0);
+				State = 190;
+				Match(MINUS);
 				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+			}
+
+			State = 193;
+			Match(ENDIF);
+			State = 195;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if (_la==MINUS) {
+				{
+				State = 194;
+				Match(MINUS);
+				}
+			}
+
+			State = 197;
+			Match(CLOSE_STMT);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1147,81 +1454,81 @@ public partial class JinjaParser : Parser {
 	[RuleVersion(0)]
 	public MacroContext macro() {
 		MacroContext _localctx = new MacroContext(Context, State);
-		EnterRule(_localctx, 16, RULE_macro);
+		EnterRule(_localctx, 20, RULE_macro);
 		int _la;
 		try {
 			_localctx = new EqMacroContext(_localctx);
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 137;
+			State = 199;
 			Match(OPEN_STMT);
-			State = 139;
+			State = 201;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==MINUS) {
 				{
-				State = 138;
+				State = 200;
 				Match(MINUS);
 				}
 			}
 
-			State = 141;
+			State = 203;
 			Match(MACRO);
-			State = 142;
+			State = 204;
 			Match(ID);
-			State = 143;
+			State = 205;
 			Match(LPARAN);
-			State = 145;
+			State = 207;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==ID) {
 				{
-				State = 144;
+				State = 206;
 				@params();
 				}
 			}
 
-			State = 147;
+			State = 209;
 			Match(RPARAN);
-			State = 149;
+			State = 211;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==MINUS) {
 				{
-				State = 148;
+				State = 210;
 				Match(MINUS);
 				}
 			}
 
-			State = 151;
+			State = 213;
 			Match(CLOSE_STMT);
-			State = 152;
+			State = 214;
 			macro_template();
-			State = 153;
+			State = 215;
 			Match(OPEN_STMT);
-			State = 155;
+			State = 217;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==MINUS) {
 				{
-				State = 154;
+				State = 216;
 				Match(MINUS);
 				}
 			}
 
-			State = 157;
+			State = 219;
 			Match(END_MACRO);
-			State = 159;
+			State = 221;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==MINUS) {
 				{
-				State = 158;
+				State = 220;
 				Match(MINUS);
 				}
 			}
 
-			State = 161;
+			State = 223;
 			Match(CLOSE_STMT);
 			}
 		}
@@ -1263,26 +1570,26 @@ public partial class JinjaParser : Parser {
 	[RuleVersion(0)]
 	public ParamsContext @params() {
 		ParamsContext _localctx = new ParamsContext(Context, State);
-		EnterRule(_localctx, 18, RULE_params);
+		EnterRule(_localctx, 22, RULE_params);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 163;
+			State = 225;
 			param();
-			State = 168;
+			State = 230;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				State = 164;
+				State = 226;
 				Match(COMMA);
-				State = 165;
+				State = 227;
 				param();
 				}
 				}
-				State = 170;
+				State = 232;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -1323,21 +1630,21 @@ public partial class JinjaParser : Parser {
 	[RuleVersion(0)]
 	public ParamContext param() {
 		ParamContext _localctx = new ParamContext(Context, State);
-		EnterRule(_localctx, 20, RULE_param);
+		EnterRule(_localctx, 24, RULE_param);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 171;
+			State = 233;
 			_localctx.id = Match(ID);
-			State = 174;
+			State = 236;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==EQUALS) {
 				{
-				State = 172;
+				State = 234;
 				Match(EQUALS);
-				State = 173;
+				State = 235;
 				_localctx.value = expression_body(0);
 				}
 			}
@@ -1356,16 +1663,64 @@ public partial class JinjaParser : Parser {
 	}
 
 	public partial class Boolean_expressionContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(JinjaParser.ID, 0); }
 		public Boolean_expressionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_boolean_expression; } }
+	 
+		public Boolean_expressionContext() { }
+		public virtual void CopyFrom(Boolean_expressionContext context) {
+			base.CopyFrom(context);
+		}
+	}
+	public partial class EqBoolExprContext : Boolean_expressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public Expression_bodyContext expression_body() {
+			return GetRuleContext<Expression_bodyContext>(0);
+		}
+		public EqBoolExprContext(Boolean_expressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IJinjaParserVisitor<TResult> typedVisitor = visitor as IJinjaParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitBoolean_expression(this);
+			if (typedVisitor != null) return typedVisitor.VisitEqBoolExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class EqBoolParensContext : Boolean_expressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPARAN() { return GetToken(JinjaParser.LPARAN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public Boolean_expressionContext boolean_expression() {
+			return GetRuleContext<Boolean_expressionContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPARAN() { return GetToken(JinjaParser.RPARAN, 0); }
+		public EqBoolParensContext(Boolean_expressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJinjaParserVisitor<TResult> typedVisitor = visitor as IJinjaParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitEqBoolParens(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class EqBoolCompareContext : Boolean_expressionContext {
+		public Expression_bodyContext left;
+		public IToken op;
+		public Expression_bodyContext right;
+		[System.Diagnostics.DebuggerNonUserCode] public Expression_bodyContext[] expression_body() {
+			return GetRuleContexts<Expression_bodyContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public Expression_bodyContext expression_body(int i) {
+			return GetRuleContext<Expression_bodyContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode GT() { return GetToken(JinjaParser.GT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LT() { return GetToken(JinjaParser.LT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode GE() { return GetToken(JinjaParser.GE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LE() { return GetToken(JinjaParser.LE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EQ() { return GetToken(JinjaParser.EQ, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NEQ() { return GetToken(JinjaParser.NEQ, 0); }
+		public EqBoolCompareContext(Boolean_expressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJinjaParserVisitor<TResult> typedVisitor = visitor as IJinjaParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitEqBoolCompare(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -1373,12 +1728,52 @@ public partial class JinjaParser : Parser {
 	[RuleVersion(0)]
 	public Boolean_expressionContext boolean_expression() {
 		Boolean_expressionContext _localctx = new Boolean_expressionContext(Context, State);
-		EnterRule(_localctx, 22, RULE_boolean_expression);
+		EnterRule(_localctx, 26, RULE_boolean_expression);
+		int _la;
 		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 176;
-			Match(ID);
+			State = 247;
+			ErrorHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(TokenStream,34,Context) ) {
+			case 1:
+				_localctx = new EqBoolParensContext(_localctx);
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 238;
+				Match(LPARAN);
+				State = 239;
+				boolean_expression();
+				State = 240;
+				Match(RPARAN);
+				}
+				break;
+			case 2:
+				_localctx = new EqBoolCompareContext(_localctx);
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 242;
+				((EqBoolCompareContext)_localctx).left = expression_body(0);
+				State = 243;
+				((EqBoolCompareContext)_localctx).op = TokenStream.LT(1);
+				_la = TokenStream.LA(1);
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 8590950400L) != 0)) ) {
+					((EqBoolCompareContext)_localctx).op = ErrorHandler.RecoverInline(this);
+				}
+				else {
+					ErrorHandler.ReportMatch(this);
+				    Consume();
+				}
+				State = 244;
+				((EqBoolCompareContext)_localctx).right = expression_body(0);
+				}
+				break;
+			case 3:
+				_localctx = new EqBoolExprContext(_localctx);
+				EnterOuterAlt(_localctx, 3);
+				{
+				State = 246;
+				expression_body(0);
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -1415,26 +1810,26 @@ public partial class JinjaParser : Parser {
 	[RuleVersion(0)]
 	public FunctionCallContext functionCall() {
 		FunctionCallContext _localctx = new FunctionCallContext(Context, State);
-		EnterRule(_localctx, 24, RULE_functionCall);
+		EnterRule(_localctx, 28, RULE_functionCall);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 178;
+			State = 249;
 			Match(ID);
-			State = 179;
+			State = 250;
 			Match(LPARAN);
-			State = 181;
+			State = 252;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 33472L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1049280L) != 0)) {
 				{
-				State = 180;
+				State = 251;
 				argList();
 				}
 			}
 
-			State = 183;
+			State = 254;
 			Match(RPARAN);
 			}
 		}
@@ -1476,26 +1871,26 @@ public partial class JinjaParser : Parser {
 	[RuleVersion(0)]
 	public ArgListContext argList() {
 		ArgListContext _localctx = new ArgListContext(Context, State);
-		EnterRule(_localctx, 26, RULE_argList);
+		EnterRule(_localctx, 30, RULE_argList);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 185;
+			State = 256;
 			expression_body(0);
-			State = 190;
+			State = 261;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				State = 186;
+				State = 257;
 				Match(COMMA);
-				State = 187;
+				State = 258;
 				expression_body(0);
 				}
 				}
-				State = 192;
+				State = 263;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -1535,28 +1930,28 @@ public partial class JinjaParser : Parser {
 	[RuleVersion(0)]
 	public CommentContext comment() {
 		CommentContext _localctx = new CommentContext(Context, State);
-		EnterRule(_localctx, 28, RULE_comment);
+		EnterRule(_localctx, 32, RULE_comment);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 193;
+			State = 264;
 			Match(OPEN_COMMENT);
-			State = 197;
+			State = 268;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==COMMENT_TEXT) {
 				{
 				{
-				State = 194;
+				State = 265;
 				Match(COMMENT_TEXT);
 				}
 				}
-				State = 199;
+				State = 270;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 200;
+			State = 271;
 			Match(CLOSE_COMMENT);
 			}
 		}
@@ -1589,11 +1984,11 @@ public partial class JinjaParser : Parser {
 	[RuleVersion(0)]
 	public TextContext text() {
 		TextContext _localctx = new TextContext(Context, State);
-		EnterRule(_localctx, 30, RULE_text);
+		EnterRule(_localctx, 34, RULE_text);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 202;
+			State = 273;
 			Match(TEXT);
 			}
 		}
@@ -1610,7 +2005,7 @@ public partial class JinjaParser : Parser {
 
 	public override bool Sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 3: return expression_body_sempred((Expression_bodyContext)_localctx, predIndex);
+		case 4: return expression_body_sempred((Expression_bodyContext)_localctx, predIndex);
 		}
 		return true;
 	}
@@ -1623,72 +2018,99 @@ public partial class JinjaParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,31,205,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,39,276,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
-		2,15,7,15,1,0,1,0,1,0,1,0,1,0,5,0,38,8,0,10,0,12,0,41,9,0,1,0,1,0,1,1,
-		1,1,1,1,1,1,5,1,49,8,1,10,1,12,1,52,9,1,1,2,1,2,3,2,56,8,2,1,2,1,2,3,2,
-		60,8,2,1,2,1,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,4,3,74,8,3,11,3,
-		12,3,75,1,3,1,3,1,3,1,3,1,3,1,3,1,3,4,3,85,8,3,11,3,12,3,86,1,3,1,3,1,
-		3,3,3,92,8,3,1,3,1,3,1,3,1,3,1,3,1,3,5,3,100,8,3,10,3,12,3,103,9,3,1,4,
-		1,4,1,4,1,4,1,4,1,4,1,4,4,4,112,8,4,11,4,12,4,113,3,4,116,8,4,1,5,1,5,
-		1,6,1,6,3,6,122,8,6,1,6,1,6,3,6,126,8,6,1,6,1,6,1,7,1,7,1,7,1,7,1,7,1,
-		7,3,7,136,8,7,1,8,1,8,3,8,140,8,8,1,8,1,8,1,8,1,8,3,8,146,8,8,1,8,1,8,
-		3,8,150,8,8,1,8,1,8,1,8,1,8,3,8,156,8,8,1,8,1,8,3,8,160,8,8,1,8,1,8,1,
-		9,1,9,1,9,5,9,167,8,9,10,9,12,9,170,9,9,1,10,1,10,1,10,3,10,175,8,10,1,
-		11,1,11,1,12,1,12,1,12,3,12,182,8,12,1,12,1,12,1,13,1,13,1,13,5,13,189,
-		8,13,10,13,12,13,192,9,13,1,14,1,14,5,14,196,8,14,10,14,12,14,199,9,14,
-		1,14,1,14,1,15,1,15,1,15,0,1,6,16,0,2,4,6,8,10,12,14,16,18,20,22,24,26,
-		28,30,0,3,1,0,10,11,1,0,12,13,2,0,6,7,9,9,226,0,39,1,0,0,0,2,50,1,0,0,
-		0,4,53,1,0,0,0,6,91,1,0,0,0,8,115,1,0,0,0,10,117,1,0,0,0,12,119,1,0,0,
-		0,14,135,1,0,0,0,16,137,1,0,0,0,18,163,1,0,0,0,20,171,1,0,0,0,22,176,1,
-		0,0,0,24,178,1,0,0,0,26,185,1,0,0,0,28,193,1,0,0,0,30,202,1,0,0,0,32,38,
-		3,30,15,0,33,38,3,4,2,0,34,38,3,12,6,0,35,38,3,16,8,0,36,38,3,28,14,0,
-		37,32,1,0,0,0,37,33,1,0,0,0,37,34,1,0,0,0,37,35,1,0,0,0,37,36,1,0,0,0,
-		38,41,1,0,0,0,39,37,1,0,0,0,39,40,1,0,0,0,40,42,1,0,0,0,41,39,1,0,0,0,
-		42,43,5,0,0,1,43,1,1,0,0,0,44,49,3,30,15,0,45,49,3,4,2,0,46,49,3,12,6,
-		0,47,49,3,28,14,0,48,44,1,0,0,0,48,45,1,0,0,0,48,46,1,0,0,0,48,47,1,0,
-		0,0,49,52,1,0,0,0,50,48,1,0,0,0,50,51,1,0,0,0,51,3,1,0,0,0,52,50,1,0,0,
-		0,53,55,5,2,0,0,54,56,5,11,0,0,55,54,1,0,0,0,55,56,1,0,0,0,56,57,1,0,0,
-		0,57,59,3,6,3,0,58,60,5,11,0,0,59,58,1,0,0,0,59,60,1,0,0,0,60,61,1,0,0,
-		0,61,62,5,29,0,0,62,5,1,0,0,0,63,64,6,3,-1,0,64,65,5,15,0,0,65,66,3,6,
-		3,0,66,67,5,16,0,0,67,92,1,0,0,0,68,92,5,6,0,0,69,92,5,7,0,0,70,92,5,9,
-		0,0,71,92,3,24,12,0,72,74,3,8,4,0,73,72,1,0,0,0,74,75,1,0,0,0,75,73,1,
-		0,0,0,75,76,1,0,0,0,76,92,1,0,0,0,77,78,5,6,0,0,78,79,5,19,0,0,79,92,3,
-		24,12,0,80,81,5,6,0,0,81,82,5,19,0,0,82,92,5,6,0,0,83,85,3,8,4,0,84,83,
-		1,0,0,0,85,86,1,0,0,0,86,84,1,0,0,0,86,87,1,0,0,0,87,88,1,0,0,0,88,89,
-		5,19,0,0,89,90,3,24,12,0,90,92,1,0,0,0,91,63,1,0,0,0,91,68,1,0,0,0,91,
-		69,1,0,0,0,91,70,1,0,0,0,91,71,1,0,0,0,91,73,1,0,0,0,91,77,1,0,0,0,91,
-		80,1,0,0,0,91,84,1,0,0,0,92,101,1,0,0,0,93,94,10,10,0,0,94,95,7,0,0,0,
-		95,100,3,6,3,11,96,97,10,9,0,0,97,98,7,1,0,0,98,100,3,6,3,10,99,93,1,0,
-		0,0,99,96,1,0,0,0,100,103,1,0,0,0,101,99,1,0,0,0,101,102,1,0,0,0,102,7,
-		1,0,0,0,103,101,1,0,0,0,104,105,5,15,0,0,105,106,3,8,4,0,106,107,5,16,
-		0,0,107,116,1,0,0,0,108,111,3,10,5,0,109,110,5,18,0,0,110,112,3,10,5,0,
-		111,109,1,0,0,0,112,113,1,0,0,0,113,111,1,0,0,0,113,114,1,0,0,0,114,116,
-		1,0,0,0,115,104,1,0,0,0,115,108,1,0,0,0,116,9,1,0,0,0,117,118,7,2,0,0,
-		118,11,1,0,0,0,119,121,5,3,0,0,120,122,5,11,0,0,121,120,1,0,0,0,121,122,
-		1,0,0,0,122,123,1,0,0,0,123,125,3,14,7,0,124,126,5,11,0,0,125,124,1,0,
-		0,0,125,126,1,0,0,0,126,127,1,0,0,0,127,128,5,30,0,0,128,13,1,0,0,0,129,
-		130,5,22,0,0,130,136,3,22,11,0,131,132,5,21,0,0,132,133,5,6,0,0,133,134,
-		5,14,0,0,134,136,3,6,3,0,135,129,1,0,0,0,135,131,1,0,0,0,136,15,1,0,0,
-		0,137,139,5,3,0,0,138,140,5,11,0,0,139,138,1,0,0,0,139,140,1,0,0,0,140,
-		141,1,0,0,0,141,142,5,26,0,0,142,143,5,6,0,0,143,145,5,15,0,0,144,146,
-		3,18,9,0,145,144,1,0,0,0,145,146,1,0,0,0,146,147,1,0,0,0,147,149,5,16,
-		0,0,148,150,5,11,0,0,149,148,1,0,0,0,149,150,1,0,0,0,150,151,1,0,0,0,151,
-		152,5,30,0,0,152,153,3,2,1,0,153,155,5,3,0,0,154,156,5,11,0,0,155,154,
-		1,0,0,0,155,156,1,0,0,0,156,157,1,0,0,0,157,159,5,27,0,0,158,160,5,11,
-		0,0,159,158,1,0,0,0,159,160,1,0,0,0,160,161,1,0,0,0,161,162,5,30,0,0,162,
-		17,1,0,0,0,163,168,3,20,10,0,164,165,5,17,0,0,165,167,3,20,10,0,166,164,
-		1,0,0,0,167,170,1,0,0,0,168,166,1,0,0,0,168,169,1,0,0,0,169,19,1,0,0,0,
-		170,168,1,0,0,0,171,174,5,6,0,0,172,173,5,14,0,0,173,175,3,6,3,0,174,172,
-		1,0,0,0,174,175,1,0,0,0,175,21,1,0,0,0,176,177,5,6,0,0,177,23,1,0,0,0,
-		178,179,5,6,0,0,179,181,5,15,0,0,180,182,3,26,13,0,181,180,1,0,0,0,181,
-		182,1,0,0,0,182,183,1,0,0,0,183,184,5,16,0,0,184,25,1,0,0,0,185,190,3,
-		6,3,0,186,187,5,17,0,0,187,189,3,6,3,0,188,186,1,0,0,0,189,192,1,0,0,0,
-		190,188,1,0,0,0,190,191,1,0,0,0,191,27,1,0,0,0,192,190,1,0,0,0,193,197,
-		5,4,0,0,194,196,5,28,0,0,195,194,1,0,0,0,196,199,1,0,0,0,197,195,1,0,0,
-		0,197,198,1,0,0,0,198,200,1,0,0,0,199,197,1,0,0,0,200,201,5,31,0,0,201,
-		29,1,0,0,0,202,203,5,1,0,0,203,31,1,0,0,0,26,37,39,48,50,55,59,75,86,91,
-		99,101,113,115,121,125,135,139,145,149,155,159,168,174,181,190,197
+		2,15,7,15,2,16,7,16,2,17,7,17,1,0,1,0,1,0,1,0,1,0,1,0,5,0,43,8,0,10,0,
+		12,0,46,9,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,5,1,55,8,1,10,1,12,1,58,9,1,1,
+		2,1,2,1,2,1,2,5,2,64,8,2,10,2,12,2,67,9,2,1,3,1,3,3,3,71,8,3,1,3,1,3,3,
+		3,75,8,3,1,3,1,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,4,4,89,8,4,11,
+		4,12,4,90,1,4,1,4,1,4,1,4,1,4,1,4,1,4,4,4,100,8,4,11,4,12,4,101,1,4,1,
+		4,1,4,3,4,107,8,4,1,4,1,4,1,4,1,4,1,4,1,4,5,4,115,8,4,10,4,12,4,118,9,
+		4,1,5,1,5,1,5,1,5,1,5,1,5,1,5,4,5,127,8,5,11,5,12,5,128,3,5,131,8,5,1,
+		6,1,6,1,7,1,7,3,7,137,8,7,1,7,1,7,3,7,141,8,7,1,7,1,7,1,8,1,8,1,8,1,8,
+		1,8,1,9,1,9,3,9,152,8,9,1,9,1,9,1,9,3,9,157,8,9,1,9,1,9,1,9,1,9,3,9,163,
+		8,9,1,9,1,9,1,9,3,9,168,8,9,1,9,1,9,1,9,5,9,173,8,9,10,9,12,9,176,9,9,
+		1,9,1,9,3,9,180,8,9,1,9,1,9,3,9,184,8,9,1,9,1,9,3,9,188,8,9,1,9,1,9,3,
+		9,192,8,9,1,9,1,9,3,9,196,8,9,1,9,1,9,1,10,1,10,3,10,202,8,10,1,10,1,10,
+		1,10,1,10,3,10,208,8,10,1,10,1,10,3,10,212,8,10,1,10,1,10,1,10,1,10,3,
+		10,218,8,10,1,10,1,10,3,10,222,8,10,1,10,1,10,1,11,1,11,1,11,5,11,229,
+		8,11,10,11,12,11,232,9,11,1,12,1,12,1,12,3,12,237,8,12,1,13,1,13,1,13,
+		1,13,1,13,1,13,1,13,1,13,1,13,3,13,248,8,13,1,14,1,14,1,14,3,14,253,8,
+		14,1,14,1,14,1,15,1,15,1,15,5,15,260,8,15,10,15,12,15,263,9,15,1,16,1,
+		16,5,16,267,8,16,10,16,12,16,270,9,16,1,16,1,16,1,17,1,17,1,17,0,1,8,18,
+		0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,0,4,1,0,10,11,1,0,12,
+		13,2,0,6,7,9,9,2,0,15,19,33,33,312,0,44,1,0,0,0,2,56,1,0,0,0,4,65,1,0,
+		0,0,6,68,1,0,0,0,8,106,1,0,0,0,10,130,1,0,0,0,12,132,1,0,0,0,14,134,1,
+		0,0,0,16,144,1,0,0,0,18,149,1,0,0,0,20,199,1,0,0,0,22,225,1,0,0,0,24,233,
+		1,0,0,0,26,247,1,0,0,0,28,249,1,0,0,0,30,256,1,0,0,0,32,264,1,0,0,0,34,
+		273,1,0,0,0,36,43,3,34,17,0,37,43,3,6,3,0,38,43,3,14,7,0,39,43,3,20,10,
+		0,40,43,3,18,9,0,41,43,3,32,16,0,42,36,1,0,0,0,42,37,1,0,0,0,42,38,1,0,
+		0,0,42,39,1,0,0,0,42,40,1,0,0,0,42,41,1,0,0,0,43,46,1,0,0,0,44,42,1,0,
+		0,0,44,45,1,0,0,0,45,47,1,0,0,0,46,44,1,0,0,0,47,48,5,0,0,1,48,1,1,0,0,
+		0,49,55,3,34,17,0,50,55,3,6,3,0,51,55,3,14,7,0,52,55,3,18,9,0,53,55,3,
+		32,16,0,54,49,1,0,0,0,54,50,1,0,0,0,54,51,1,0,0,0,54,52,1,0,0,0,54,53,
+		1,0,0,0,55,58,1,0,0,0,56,54,1,0,0,0,56,57,1,0,0,0,57,3,1,0,0,0,58,56,1,
+		0,0,0,59,64,3,34,17,0,60,64,3,6,3,0,61,64,3,14,7,0,62,64,3,32,16,0,63,
+		59,1,0,0,0,63,60,1,0,0,0,63,61,1,0,0,0,63,62,1,0,0,0,64,67,1,0,0,0,65,
+		63,1,0,0,0,65,66,1,0,0,0,66,5,1,0,0,0,67,65,1,0,0,0,68,70,5,2,0,0,69,71,
+		5,11,0,0,70,69,1,0,0,0,70,71,1,0,0,0,71,72,1,0,0,0,72,74,3,8,4,0,73,75,
+		5,11,0,0,74,73,1,0,0,0,74,75,1,0,0,0,75,76,1,0,0,0,76,77,5,37,0,0,77,7,
+		1,0,0,0,78,79,6,4,-1,0,79,80,5,20,0,0,80,81,3,8,4,0,81,82,5,21,0,0,82,
+		107,1,0,0,0,83,107,5,6,0,0,84,107,5,7,0,0,85,107,5,9,0,0,86,107,3,28,14,
+		0,87,89,3,10,5,0,88,87,1,0,0,0,89,90,1,0,0,0,90,88,1,0,0,0,90,91,1,0,0,
+		0,91,107,1,0,0,0,92,93,5,6,0,0,93,94,5,24,0,0,94,107,3,28,14,0,95,96,5,
+		6,0,0,96,97,5,24,0,0,97,107,5,6,0,0,98,100,3,10,5,0,99,98,1,0,0,0,100,
+		101,1,0,0,0,101,99,1,0,0,0,101,102,1,0,0,0,102,103,1,0,0,0,103,104,5,24,
+		0,0,104,105,3,28,14,0,105,107,1,0,0,0,106,78,1,0,0,0,106,83,1,0,0,0,106,
+		84,1,0,0,0,106,85,1,0,0,0,106,86,1,0,0,0,106,88,1,0,0,0,106,92,1,0,0,0,
+		106,95,1,0,0,0,106,99,1,0,0,0,107,116,1,0,0,0,108,109,10,10,0,0,109,110,
+		7,0,0,0,110,115,3,8,4,11,111,112,10,9,0,0,112,113,7,1,0,0,113,115,3,8,
+		4,10,114,108,1,0,0,0,114,111,1,0,0,0,115,118,1,0,0,0,116,114,1,0,0,0,116,
+		117,1,0,0,0,117,9,1,0,0,0,118,116,1,0,0,0,119,120,5,20,0,0,120,121,3,10,
+		5,0,121,122,5,21,0,0,122,131,1,0,0,0,123,126,3,12,6,0,124,125,5,23,0,0,
+		125,127,3,12,6,0,126,124,1,0,0,0,127,128,1,0,0,0,128,126,1,0,0,0,128,129,
+		1,0,0,0,129,131,1,0,0,0,130,119,1,0,0,0,130,123,1,0,0,0,131,11,1,0,0,0,
+		132,133,7,2,0,0,133,13,1,0,0,0,134,136,5,3,0,0,135,137,5,11,0,0,136,135,
+		1,0,0,0,136,137,1,0,0,0,137,138,1,0,0,0,138,140,3,16,8,0,139,141,5,11,
+		0,0,140,139,1,0,0,0,140,141,1,0,0,0,141,142,1,0,0,0,142,143,5,38,0,0,143,
+		15,1,0,0,0,144,145,5,26,0,0,145,146,5,6,0,0,146,147,5,14,0,0,147,148,3,
+		8,4,0,148,17,1,0,0,0,149,151,5,3,0,0,150,152,5,11,0,0,151,150,1,0,0,0,
+		151,152,1,0,0,0,152,153,1,0,0,0,153,154,5,27,0,0,154,156,3,26,13,0,155,
+		157,5,11,0,0,156,155,1,0,0,0,156,157,1,0,0,0,157,158,1,0,0,0,158,159,5,
+		38,0,0,159,174,3,4,2,0,160,162,5,3,0,0,161,163,5,11,0,0,162,161,1,0,0,
+		0,162,163,1,0,0,0,163,164,1,0,0,0,164,165,5,28,0,0,165,167,3,26,13,0,166,
+		168,5,11,0,0,167,166,1,0,0,0,167,168,1,0,0,0,168,169,1,0,0,0,169,170,5,
+		38,0,0,170,171,3,4,2,0,171,173,1,0,0,0,172,160,1,0,0,0,173,176,1,0,0,0,
+		174,172,1,0,0,0,174,175,1,0,0,0,175,187,1,0,0,0,176,174,1,0,0,0,177,179,
+		5,3,0,0,178,180,5,11,0,0,179,178,1,0,0,0,179,180,1,0,0,0,180,181,1,0,0,
+		0,181,183,5,29,0,0,182,184,5,11,0,0,183,182,1,0,0,0,183,184,1,0,0,0,184,
+		185,1,0,0,0,185,186,5,38,0,0,186,188,3,4,2,0,187,177,1,0,0,0,187,188,1,
+		0,0,0,188,189,1,0,0,0,189,191,5,3,0,0,190,192,5,11,0,0,191,190,1,0,0,0,
+		191,192,1,0,0,0,192,193,1,0,0,0,193,195,5,30,0,0,194,196,5,11,0,0,195,
+		194,1,0,0,0,195,196,1,0,0,0,196,197,1,0,0,0,197,198,5,38,0,0,198,19,1,
+		0,0,0,199,201,5,3,0,0,200,202,5,11,0,0,201,200,1,0,0,0,201,202,1,0,0,0,
+		202,203,1,0,0,0,203,204,5,34,0,0,204,205,5,6,0,0,205,207,5,20,0,0,206,
+		208,3,22,11,0,207,206,1,0,0,0,207,208,1,0,0,0,208,209,1,0,0,0,209,211,
+		5,21,0,0,210,212,5,11,0,0,211,210,1,0,0,0,211,212,1,0,0,0,212,213,1,0,
+		0,0,213,214,5,38,0,0,214,215,3,2,1,0,215,217,5,3,0,0,216,218,5,11,0,0,
+		217,216,1,0,0,0,217,218,1,0,0,0,218,219,1,0,0,0,219,221,5,35,0,0,220,222,
+		5,11,0,0,221,220,1,0,0,0,221,222,1,0,0,0,222,223,1,0,0,0,223,224,5,38,
+		0,0,224,21,1,0,0,0,225,230,3,24,12,0,226,227,5,22,0,0,227,229,3,24,12,
+		0,228,226,1,0,0,0,229,232,1,0,0,0,230,228,1,0,0,0,230,231,1,0,0,0,231,
+		23,1,0,0,0,232,230,1,0,0,0,233,236,5,6,0,0,234,235,5,14,0,0,235,237,3,
+		8,4,0,236,234,1,0,0,0,236,237,1,0,0,0,237,25,1,0,0,0,238,239,5,20,0,0,
+		239,240,3,26,13,0,240,241,5,21,0,0,241,248,1,0,0,0,242,243,3,8,4,0,243,
+		244,7,3,0,0,244,245,3,8,4,0,245,248,1,0,0,0,246,248,3,8,4,0,247,238,1,
+		0,0,0,247,242,1,0,0,0,247,246,1,0,0,0,248,27,1,0,0,0,249,250,5,6,0,0,250,
+		252,5,20,0,0,251,253,3,30,15,0,252,251,1,0,0,0,252,253,1,0,0,0,253,254,
+		1,0,0,0,254,255,5,21,0,0,255,29,1,0,0,0,256,261,3,8,4,0,257,258,5,22,0,
+		0,258,260,3,8,4,0,259,257,1,0,0,0,260,263,1,0,0,0,261,259,1,0,0,0,261,
+		262,1,0,0,0,262,31,1,0,0,0,263,261,1,0,0,0,264,268,5,4,0,0,265,267,5,36,
+		0,0,266,265,1,0,0,0,267,270,1,0,0,0,268,266,1,0,0,0,268,269,1,0,0,0,269,
+		271,1,0,0,0,270,268,1,0,0,0,271,272,5,39,0,0,272,33,1,0,0,0,273,274,5,
+		1,0,0,274,35,1,0,0,0,38,42,44,54,56,63,65,70,74,90,101,106,114,116,128,
+		130,136,140,151,156,162,167,174,179,183,187,191,195,201,207,211,217,221,
+		230,236,247,252,261,268
 	};
 
 	public static readonly ATN _ATN =
