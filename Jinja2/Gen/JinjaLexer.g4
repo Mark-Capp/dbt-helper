@@ -51,6 +51,7 @@ mode STMT;
   SET       : 'set';
   APPEND     : 'append';
   TO         : 'to';
+  NOT       : 'not';
   IF         : 'if' ;
   ELIF       : 'elif' ;
   ELSE       : 'else' ;

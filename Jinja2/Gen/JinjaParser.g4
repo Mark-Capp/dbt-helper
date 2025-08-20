@@ -99,7 +99,7 @@ param: id=ID (EQUALS value=expression_body)?;
 boolean_expression
     : LPARAN boolean_expression RPARAN #eqBoolParens
     | left=expression_body op=(GT|LT|GE|LE|EQ|NEQ) right=expression_body #eqBoolCompare
-    | expression_body #eqBoolExpr
+    | (NOT)? expression_body #eqBoolExpr
     ;
     
 functionCall

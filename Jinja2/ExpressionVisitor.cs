@@ -86,10 +86,18 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<IBlock>
         return new ComparisonBlock(left, right, @operator);
     }
 
+    public override IBlock VisitEqBoolExpr(JinjaParser.EqBoolExprContext context)
+    {
+        var inverse = context.NOT() != null;
+        var left = Visit(context.expression_body()) as ExpressionBlock;
+        return new ComparisonBlock(left, null, Operator.Equal, inverse);
+    }
+
     public override IBlock VisitEqIfBlock(JinjaParser.EqIfBlockContext context)
     {
         var hasElse  = context.ELSE() != null;
-        var condition = Visit(context.boolean_expression(0)) as ExpressionBlock;
+        var boolCondition = context.boolean_expression(0);
+        var condition = Visit(boolCondition) as ExpressionBlock;
         
         var jinjaVisitor = new JinjaVisitor();
         var body = jinjaVisitor.Visit(context.if_template(0));

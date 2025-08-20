@@ -185,6 +185,13 @@ public interface IJinjaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEqAssignCollection([NotNull] JinjaParser.EqAssignCollectionContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>eqAppendToCollection</c>
+	/// labeled alternative in <see cref="JinjaParser.statement_body"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqAppendToCollection([NotNull] JinjaParser.EqAppendToCollectionContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>eqIfBlock</c>
 	/// labeled alternative in <see cref="JinjaParser.if_stmt"/>.
 	/// </summary>
