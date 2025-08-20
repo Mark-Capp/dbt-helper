@@ -19,10 +19,28 @@ public class ForBlock(
         // Preserve previous value of the loop variable (if any)
         context.Variables.TryGetValue(loopVarName, out var previous);
 
+
         if (enumerable is not null)
         {
-            foreach (var item in enumerable)
+            var array = enumerable.ToArray();
+            var classBlock = new ClassBlock(new Dictionary<string, ExpressionBlock>
             {
+                { "first", new IntBlock(1) },
+                { "last", new IntBlock(0) },
+                { "length", new IntBlock(array.Length) },
+            });
+            context.Variables.Add("loop", classBlock);
+            
+            for(var i = 0; i < array.Length; i++)
+            {
+                var item = array[i];
+                if(i != 0)
+                    classBlock.SetProperty("first", new IntBlock(0));
+                
+                if(i == array.Length - 1)
+                    classBlock.SetProperty("last", new IntBlock(1));
+                
+                
                 // Assign the current item into the loop variable (wrap as ExpressionBlock if needed)
                 context.Variables[loopVarName] = item as ExpressionBlock ?? new ValueBlock(item);
                 RenderBody(context, body);

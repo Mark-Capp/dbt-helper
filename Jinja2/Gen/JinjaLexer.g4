@@ -49,6 +49,8 @@ mode STMT;
   WS_STMT    : [ \t\r\n]+ -> skip ;
   
   SET       : 'set';
+  APPEND     : 'append';
+  TO         : 'to';
   IF         : 'if' ;
   ELIF       : 'elif' ;
   ELSE       : 'else' ;

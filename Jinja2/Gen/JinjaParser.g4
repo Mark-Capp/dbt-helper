@@ -43,7 +43,7 @@ concat_expression_body
     ;
     
 collection_expression 
-    : LSBRACKET ((collection_item)? (COMMA collection_item)*) RSBRACKET;
+    : LSBRACKET (collection_item (COMMA collection_item)*)? RSBRACKET;
     
 collection_item 
     : ID
@@ -58,6 +58,7 @@ statement
 statement_body
     : SET ID EQUALS expression_body #eqAssign
     | SET ID EQUALS collection_expression #eqAssignCollection
+    | APPEND collection_item TO ID #eqAppendToCollection
     ;
     
 if_stmt

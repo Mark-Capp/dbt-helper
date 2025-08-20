@@ -63,6 +63,13 @@ internal class ExpressionVisitor : JinjaParserBaseVisitor<IBlock>
     public override IBlock VisitEqBoolParens(JinjaParser.EqBoolParensContext context) 
         => Visit(context.boolean_expression());
 
+    public override IBlock VisitEqObjectProperty(JinjaParser.EqObjectPropertyContext context)
+    {
+        var name = context.ID(0);
+        var property = context.ID(1);
+        return new PropertyBlock(name.GetText(), [property.GetText()]);
+    }
+
     public override IBlock VisitEqBoolCompare(JinjaParser.EqBoolCompareContext context)
     {
         var @operator = context.op.Type switch
